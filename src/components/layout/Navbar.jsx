@@ -17,9 +17,7 @@ export default function Navbar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white">
             S
           </div>
-          <span className="text-lg font-semibold tracking-tight text-neutral-900">
-            {APP_NAME}
-          </span>
+          <span className="text-lg font-semibold tracking-tight text-neutral-900">{APP_NAME}</span>
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

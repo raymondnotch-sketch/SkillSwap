@@ -26,11 +26,7 @@ export default function Avatar({ src, alt, initials, size = 'md', className = ''
       role="img"
       {...props}
     >
-      {initials ? (
-        initials.slice(0, 2).toUpperCase()
-      ) : (
-        <User className="h-1/2 w-1/2" />
-      )}
+      {initials ? initials.slice(0, 2).toUpperCase() : <User className="h-1/2 w-1/2" />}
     </div>
   );
 }

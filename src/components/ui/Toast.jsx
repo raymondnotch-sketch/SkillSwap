@@ -52,7 +52,10 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ toast, removeToast }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-[200] flex flex-col-reverse gap-2" aria-live="polite">
+      <div
+        className="fixed bottom-4 right-4 z-[200] flex flex-col-reverse gap-2"
+        aria-live="polite"
+      >
         <AnimatePresence>
           {toasts.map((t) => {
             const Icon = icons[t.variant];

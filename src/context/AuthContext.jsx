@@ -35,7 +35,13 @@ export function AuthProvider({ children }) {
       id: `user-${Date.now()}`,
       name: userData.name || '',
       email: userData.email || '',
-      initials: (userData.name || '').split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2) || '?',
+      initials:
+        (userData.name || '')
+          .split(' ')
+          .map((n) => n[0])
+          .join('')
+          .toUpperCase()
+          .slice(0, 2) || '?',
       avatar: null,
       joinedAt: new Date().toISOString(),
       bio: '',
