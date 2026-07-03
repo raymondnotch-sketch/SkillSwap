@@ -5,6 +5,7 @@ export const NAV_LINKS = [
   { label: 'How It Works', path: '/how-it-works' },
   { label: 'About', path: '/about' },
   { label: 'FAQ', path: '/faq' },
+  { label: 'Contact', path: '/contact' },
 ];
 
 export const FOOTER_LINKS = {
@@ -15,8 +16,7 @@ export const FOOTER_LINKS = {
   ],
   company: [
     { label: 'About', path: '/about' },
-    { label: 'Blog', path: '/blog' },
-    { label: 'Careers', path: '/careers' },
+    { label: 'Contact', path: '/contact' },
   ],
   legal: [
     { label: 'Privacy', path: '/privacy' },
