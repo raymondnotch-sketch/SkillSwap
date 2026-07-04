@@ -45,6 +45,13 @@ export const DASHBOARD_NAV_GROUPS = [
     items: [
       { label: 'Leaderboard', path: '/leaderboard' },
       { label: 'Community', path: '/community' },
+      { label: 'Events', path: '/events' },
+    ],
+  },
+  {
+    label: 'Sessions',
+    items: [
+      { label: 'Session Booking', path: '/sessions' },
     ],
   },
   {
@@ -76,6 +83,8 @@ export const PATH_TITLES = {
   '/profile': 'Profile',
   '/profile/edit': 'Edit Profile',
   '/settings': 'Settings',
+  '/events': 'Events',
+  '/sessions': 'Session Booking',
   '/help': 'Help',
   '/feedback': 'Feedback',
   '/admin': 'Administration',

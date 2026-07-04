@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Handshake, MessageSquare, Bell,
   BookOpen, Trophy, Users, User, Settings,
   HelpCircle, MessageCircle, LogOut, Shield,
-  ChevronLeft, ChevronRight, X,
+  ChevronLeft, ChevronRight, X, Calendar, Clock,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { DASHBOARD_NAV_GROUPS, DASHBOARD_BOTTOM_NAV, DASHBOARD_HIDDEN_NAV, APP_NAME } from '../../constants';
@@ -18,6 +18,8 @@ const iconMap = {
   'Learning Paths': BookOpen,
   Leaderboard: Trophy,
   Community: Users,
+  Events: Calendar,
+  'Session Booking': Clock,
   Profile: User,
   Settings: Settings,
   Help: HelpCircle,
@@ -59,7 +61,7 @@ function NavItem({ item, collapsed, isActive }) {
   );
 }
 
-export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onToggleCollapse }) {
+export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onToggleCollapse, onHoverChange }) {
   const location = useLocation();
   const { logout } = useAuth();
   const [hoveredCollapsed, setHoveredCollapsed] = useState(false);
@@ -184,8 +186,16 @@ export default function Sidebar({ isMobileOpen, onMobileClose, isCollapsed, onTo
         className="hidden lg:flex lg:flex-col fixed left-0 top-0 h-screen bg-white border-r border-neutral-200/60 z-30"
         animate={{ width: effectiveCollapsed ? 64 : 256 }}
         transition={{ duration: 0.2, ease: 'easeInOut' }}
-        onMouseEnter={() => isCollapsed && setHoveredCollapsed(true)}
-        onMouseLeave={() => setHoveredCollapsed(false)}
+        onMouseEnter={() => {
+          if (isCollapsed) {
+            setHoveredCollapsed(true);
+            onHoverChange?.(true);
+          }
+        }}
+        onMouseLeave={() => {
+          setHoveredCollapsed(false);
+          onHoverChange?.(false);
+        }}
       >
         {sidebarContent}
       </motion.aside>

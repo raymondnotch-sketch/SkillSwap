@@ -18,6 +18,11 @@ import Notifications from '../pages/Notifications';
 import Settings from '../pages/Settings';
 import Profile from '../pages/Profile';
 import EditProfile from '../pages/EditProfile';
+import Leaderboard from '../pages/Leaderboard';
+import LearningPaths from '../pages/LearningPaths';
+import Community from '../pages/Community';
+import Events from '../pages/Events';
+import SessionBooking from '../pages/SessionBooking';
 import AdminDashboard from '../pages/AdminDashboard';
 import VerificationQueue from '../pages/VerificationQueue';
 import Reports from '../pages/Reports';
@@ -51,6 +56,11 @@ export default function AppRoutes() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/learning" element={<LearningPaths />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/sessions" element={<SessionBooking />} />
       </Route>
 
       {/* Admin routes */}
