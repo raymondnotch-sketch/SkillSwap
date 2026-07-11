@@ -43,9 +43,7 @@ export default function TopNav({ title, onMenuToggle }) {
               className="h-8 w-44 rounded-xl border border-neutral-200 bg-neutral-50 pl-8 pr-10 text-sm text-neutral-900 transition-all duration-200 placeholder:text-neutral-400 hover:border-neutral-300 hover:bg-white focus:w-60 focus:border-primary-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/15"
               aria-label="Search the dashboard"
             />
-            <kbd className="pointer-events-none absolute right-2.5 hidden h-4 items-center rounded border border-neutral-200 bg-white px-1 font-mono text-[9px] text-neutral-400 sm:flex">
-              ⌘K
-            </kbd>
+
           </div>
 
           {/* Mobile search toggle */}
