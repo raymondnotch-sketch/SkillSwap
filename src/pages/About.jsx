@@ -94,7 +94,7 @@ export default function About() {
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-neutral-600">
                   To create a trusted platform where every student can freely share their knowledge,
-                  learn new skills, and build meaningful connections — regardless of their background
+                  learn new skills, and build meaningful connections, regardless of their background
                   or experience level.
                 </p>
               </Card>
@@ -145,19 +145,22 @@ export default function About() {
               </h2>
               <div className="mt-5 space-y-4 text-base leading-relaxed text-neutral-600">
                 <p>
-                  SkillSwap started in 2024 when a group of university students realized that the
-                  most effective study sessions happened outside the classroom — between peers
-                  teaching each other.
+                  We've all been there: staring at a concept that just won't click, sitting through a lecture 
+                  that moves too fast, or struggling alone when you needed someone to just slow down and explain 
+                  it their way. That's where peer learning is different. When a fellow student teaches you, someone 
+                  who remembers what it felt like not to understand, patience replaces pressure. Time becomes something 
+                  shared, not wasted. And understanding actually sticks.
                 </p>
                 <p>
-                  We noticed that students who explained concepts to others retained information far
-                  better, and those who struggled found more patience and clarity from fellow
-                  students than from traditional resources.
+                  We realized that the best learning we've done wasn't in a classroom... it was in conversations with 
+                  classmates who took the time to break things down, who answered questions without judgment, who 
+                  understood exactly where we were stuck. That's when we decided: what if we could make that easier? 
+                  What if every student could find someone willing to teach what they know, and help with what they're 
+                  learning?
                 </p>
                 <p>
-                  What began as a small pilot program in a single dormitory has grown into a
-                  platform serving thousands of students across hundreds of universities. Our mission
-                  remains the same: make peer learning accessible, safe, and rewarding for everyone.
+                  SkillSwap exists to do exactly that. We're building a space where you can find the help you need, 
+                  when you need it... from someone who's been through it. Because learning together works better.
                 </p>
               </div>
             </motion.div>

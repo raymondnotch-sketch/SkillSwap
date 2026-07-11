@@ -325,8 +325,10 @@ export default function Home() {
                   whileHover={{ scale: 1.06, rotate: 4 }}
                   className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-accent-600 shadow-lg shadow-primary-500/30"
                 >
-                  <span className="text-3xl font-black text-white/30 select-none absolute">{i + 1}</span>
-                  <step.icon className="relative h-9 w-9 text-white" aria-hidden="true" />
+                 <span className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-bold text-primary-600 shadow-md select-none">
+                   {i + 1}
+                </span>
+                 <step.icon className="h-9 w-9 text-white" aria-hidden="true" />
                   <div className="absolute -inset-1 -z-10 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-500 opacity-50 blur-lg" />
                 </motion.div>
                 <p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary-600">

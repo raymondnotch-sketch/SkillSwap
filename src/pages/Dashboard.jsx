@@ -20,7 +20,7 @@ const activityIcons = {
 
 function StatCard({ icon: Icon, label, value, trend, color }) {
   return (
-    <Card variant="stat">
+    <Card variant="stat" hover className="p-5 text-left">
       <div className="flex items-start justify-between">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-100">
           <Icon className={`h-5 w-5 ${color}`} />
