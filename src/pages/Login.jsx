@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import Input from '../components/ui/Input';
+import Loading from '../components/ui/Loading';
 import Button from '../components/ui/Button';
 import Checkbox from '../components/ui/Checkbox';
 import { useToast } from '../components/ui/Toast';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,8 +15,20 @@ export default function Login() {
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login, isAuthenticated, initialized } = useAuth();
+
+  useEffect(() => {
+    if (initialized && isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [initialized, isAuthenticated, navigate]);
+
+  if (!initialized) {
+    return <Loading fullScreen message="Checking authentication..." />;
+  }
 
   function validate() {
     const e = {};
@@ -25,35 +38,39 @@ export default function Login() {
     return e;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setServerError('');
     const v = validate();
     setErrors(v);
     if (Object.keys(v).length > 0) return;
 
-    // UI-only placeholder: simulate login loading state
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast.success('Logged in (placeholder)');
+    try {
+      await login(email, password);
+      toast.success('Logged in successfully');
       navigate('/dashboard');
-    }, 900);
+    } catch (error) {
+      setServerError(error.message || 'Login failed.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <div className="w-full">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">
-          Welcome back
-        </h1>
-        <p className="mt-1.5 text-sm text-neutral-500">
-          Sign in to continue your learning journey
-        </p>
+        <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">Welcome back</h1>
+        <p className="mt-1.5 text-sm text-neutral-500">Sign in to continue your learning journey</p>
       </div>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
-
+        {serverError && (
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            {serverError}
+          </div>
+        )}
         {/* Email */}
         <div>
           <label htmlFor="login-email" className="form-label">
@@ -79,7 +96,9 @@ export default function Login() {
             />
           </div>
           {errors.email && (
-            <p className="mt-1.5 text-xs text-danger-600" role="alert">{errors.email}</p>
+            <p className="mt-1.5 text-xs text-danger-600" role="alert">
+              {errors.email}
+            </p>
           )}
         </div>
 
@@ -128,7 +147,9 @@ export default function Login() {
             </button>
           </div>
           {errors.password && (
-            <p className="mt-1.5 text-xs text-danger-600" role="alert">{errors.password}</p>
+            <p className="mt-1.5 text-xs text-danger-600" role="alert">
+              {errors.password}
+            </p>
           )}
         </div>
 
@@ -145,6 +166,7 @@ export default function Login() {
         <div className="pt-2">
           <Button
             type="submit"
+            onClick={handleSubmit}
             loading={loading}
             fullWidth
             iconRight={ArrowRight}

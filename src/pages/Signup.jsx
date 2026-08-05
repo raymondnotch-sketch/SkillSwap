@@ -1,10 +1,12 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Check, X } from 'lucide-react';
+import Loading from '../components/ui/Loading';
 import Button from '../components/ui/Button';
 import Checkbox from '../components/ui/Checkbox';
 import { useToast } from '../components/ui/Toast';
+import { useAuth } from '../hooks/useAuth';
 
 // Password strength helpers
 function getStrength(password) {
@@ -52,8 +54,20 @@ export default function Signup() {
   const [agree, setAgree] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { register, isAuthenticated, initialized } = useAuth();
+
+  useEffect(() => {
+    if (initialized && isAuthenticated) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [initialized, isAuthenticated, navigate]);
+
+  if (!initialized) {
+    return <Loading fullScreen message="Checking authentication..." />;
+  }
 
   const strength = useMemo(() => getStrength(password), [password]);
   const strengthWidth = `${(strength / 5) * 100}%`;
@@ -71,19 +85,30 @@ export default function Signup() {
     return e;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setServerError('');
     const v = validate();
     setErrors(v);
     if (Object.keys(v).length > 0) return;
 
-    // UI-only placeholder: simulate signup
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast.success('Account created (placeholder)');
+    try {
+      await register({
+        full_name: name,
+        email,
+        password,
+        school: '',
+        department: '',
+        level: '',
+      });
+      toast.success('Account created successfully');
       navigate('/login');
-    }, 1000);
+    } catch (error) {
+      setServerError(error.message || 'Signup failed.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -93,18 +118,25 @@ export default function Signup() {
         <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">
           Create your account
         </h1>
-        <p className="mt-1.5 text-sm text-neutral-500">
-          Start exchanging skills today — it's free
-        </p>
+        <p className="mt-1.5 text-sm text-neutral-500">Start exchanging skills today — it's free</p>
       </div>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
-
+        {serverError && (
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            {serverError}
+          </div>
+        )}
         {/* Full name */}
         <div>
-          <label htmlFor="signup-name" className="form-label">Full name</label>
+          <label htmlFor="signup-name" className="form-label">
+            Full name
+          </label>
           <div className="relative">
-            <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" aria-hidden="true" />
+            <User
+              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
+              aria-hidden="true"
+            />
             <input
               id="signup-name"
               type="text"
@@ -117,14 +149,23 @@ export default function Signup() {
               className={`form-input pl-10 ${errors.name ? 'error' : ''}`}
             />
           </div>
-          {errors.name && <p className="mt-1.5 text-xs text-danger-600" role="alert">{errors.name}</p>}
+          {errors.name && (
+            <p className="mt-1.5 text-xs text-danger-600" role="alert">
+              {errors.name}
+            </p>
+          )}
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="signup-email" className="form-label">Email address</label>
+          <label htmlFor="signup-email" className="form-label">
+            Email address
+          </label>
           <div className="relative">
-            <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" aria-hidden="true" />
+            <Mail
+              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
+              aria-hidden="true"
+            />
             <input
               id="signup-email"
               type="email"
@@ -137,14 +178,23 @@ export default function Signup() {
               className={`form-input pl-10 ${errors.email ? 'error' : ''}`}
             />
           </div>
-          {errors.email && <p className="mt-1.5 text-xs text-danger-600" role="alert">{errors.email}</p>}
+          {errors.email && (
+            <p className="mt-1.5 text-xs text-danger-600" role="alert">
+              {errors.email}
+            </p>
+          )}
         </div>
 
         {/* Password + strength meter */}
         <div>
-          <label htmlFor="signup-password" className="form-label">Password</label>
+          <label htmlFor="signup-password" className="form-label">
+            Password
+          </label>
           <div className="relative">
-            <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" aria-hidden="true" />
+            <Lock
+              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
+              aria-hidden="true"
+            />
             <input
               id="signup-password"
               type={showPassword ? 'text' : 'password'}
@@ -162,7 +212,11 @@ export default function Signup() {
               className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-0.5 text-neutral-400 transition-colors hover:text-neutral-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
-              {showPassword ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <Eye className="h-4 w-4" aria-hidden="true" />
+              )}
             </button>
           </div>
 
@@ -199,13 +253,18 @@ export default function Signup() {
                     const met = req.test(password);
                     return (
                       <div key={req.label} className="flex items-center gap-2">
-                        <div className={`flex h-4 w-4 items-center justify-center rounded-full transition-colors duration-200 ${met ? 'bg-success-100' : 'bg-neutral-100'}`}>
-                          {met
-                            ? <Check className="h-2.5 w-2.5 text-success-600" aria-hidden="true" />
-                            : <X className="h-2.5 w-2.5 text-neutral-400" aria-hidden="true" />
-                          }
+                        <div
+                          className={`flex h-4 w-4 items-center justify-center rounded-full transition-colors duration-200 ${met ? 'bg-success-100' : 'bg-neutral-100'}`}
+                        >
+                          {met ? (
+                            <Check className="h-2.5 w-2.5 text-success-600" aria-hidden="true" />
+                          ) : (
+                            <X className="h-2.5 w-2.5 text-neutral-400" aria-hidden="true" />
+                          )}
                         </div>
-                        <span className={`text-xs transition-colors duration-200 ${met ? 'text-success-700' : 'text-neutral-400'}`}>
+                        <span
+                          className={`text-xs transition-colors duration-200 ${met ? 'text-success-700' : 'text-neutral-400'}`}
+                        >
                           {req.label}
                         </span>
                       </div>
@@ -216,14 +275,23 @@ export default function Signup() {
             )}
           </AnimatePresence>
 
-          {errors.password && <p className="mt-1.5 text-xs text-danger-600" role="alert">{errors.password}</p>}
+          {errors.password && (
+            <p className="mt-1.5 text-xs text-danger-600" role="alert">
+              {errors.password}
+            </p>
+          )}
         </div>
 
         {/* Confirm password */}
         <div>
-          <label htmlFor="signup-confirm" className="form-label">Confirm password</label>
+          <label htmlFor="signup-confirm" className="form-label">
+            Confirm password
+          </label>
           <div className="relative">
-            <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" aria-hidden="true" />
+            <Lock
+              className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
+              aria-hidden="true"
+            />
             <input
               id="signup-confirm"
               type={showConfirm ? 'text' : 'password'}
@@ -241,10 +309,18 @@ export default function Signup() {
               className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-0.5 text-neutral-400 transition-colors hover:text-neutral-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
               aria-label={showConfirm ? 'Hide password' : 'Show password'}
             >
-              {showConfirm ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Eye className="h-4 w-4" aria-hidden="true" />}
+              {showConfirm ? (
+                <EyeOff className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <Eye className="h-4 w-4" aria-hidden="true" />
+              )}
             </button>
           </div>
-          {errors.confirm && <p className="mt-1.5 text-xs text-danger-600" role="alert">{errors.confirm}</p>}
+          {errors.confirm && (
+            <p className="mt-1.5 text-xs text-danger-600" role="alert">
+              {errors.confirm}
+            </p>
+          )}
         </div>
 
         {/* Terms */}
@@ -253,11 +329,17 @@ export default function Signup() {
             label={
               <span className="text-sm text-neutral-600">
                 I agree to the{' '}
-                <Link to="/terms" className="font-medium text-primary-600 hover:underline underline-offset-2">
+                <Link
+                  to="/terms"
+                  className="font-medium text-primary-600 hover:underline underline-offset-2"
+                >
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link to="/privacy" className="font-medium text-primary-600 hover:underline underline-offset-2">
+                <Link
+                  to="/privacy"
+                  className="font-medium text-primary-600 hover:underline underline-offset-2"
+                >
                   Privacy Policy
                 </Link>
               </span>

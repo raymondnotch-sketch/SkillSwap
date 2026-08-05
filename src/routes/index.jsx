@@ -3,6 +3,7 @@ import PublicLayout from '../layouts/PublicLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
 import AdminLayout from '../layouts/AdminLayout';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 import Home from '../pages/Home';
 import About from '../pages/About';
@@ -49,7 +50,13 @@ export default function AppRoutes() {
       </Route>
 
       {/* Dashboard routes */}
-      <Route element={<DashboardLayout />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/matches" element={<Matches />} />
