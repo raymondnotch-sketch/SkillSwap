@@ -357,24 +357,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-12 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs">
-            <div className="grid grid-cols-3 bg-neutral-100 p-4 font-bold text-sm text-neutral-900 border-b border-neutral-200">
-              <div>Feature</div>
-              <div className="text-rose-700">Traditional Tutoring</div>
-              <div className="text-primary-700">SkillSwap Peer Exchange</div>
-            </div>
-            {comparisons.map((c, i) => (
-              <div key={c.aspect} className={`grid grid-cols-3 p-4 text-sm ${i % 2 === 0 ? 'bg-white' : 'bg-neutral-50/50'} border-b border-neutral-100 last:border-0`}>
-                <div className="font-semibold text-neutral-900">{c.aspect}</div>
-                <div className="flex items-start gap-2 text-neutral-600">
-                  <XCircle className="h-4 w-4 shrink-0 text-rose-500 mt-0.5" />
-                  <span>{c.traditional}</span>
-                </div>
-                <div className="flex items-start gap-2 font-medium text-neutral-900">
-                  <CheckCircle className="h-4 w-4 shrink-0 text-primary-600 mt-0.5" />
-                  <span>{c.skillswap}</span>
-                </div>
-              </div>
+
             ))}
           </div>
         </div>

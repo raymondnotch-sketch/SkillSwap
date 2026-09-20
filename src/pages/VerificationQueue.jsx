@@ -252,10 +252,6 @@ export default function VerificationQueue() {
           </Card>
         )}
       </div>
-
-      <Card className="p-0">
-        <VerificationTable />
-      </Card>
     </motion.div>
   );
 }

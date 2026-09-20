@@ -46,8 +46,7 @@ export default function AdminDashboard() {
       className="px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto"
     >
       <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Admin Dashboard</h1>
-        <p className="mt-1 text-sm text-neutral-500">Platform overview and quick actions for administrators.</p>
+        <p className="text-sm text-neutral-500">Platform overview and quick actions for administrators.</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 mb-8">

@@ -62,8 +62,7 @@ export default function Badge({
   if (variant === 'outline') {
     return (
       <span
-        className={`inline-flex items-center rounded-full border bg-transparent px-2.5 py-0.5 text-xs font-medium transition-colors ${outlineMap[color]} ${className}`}
-        className={`inline-flex items-center gap-1 rounded-full font-medium ${sizeMap[size]} ${outlineMap[color]} ${className}`}
+        className={`inline-flex items-center gap-1 rounded-full font-medium transition-colors ${sizeMap[size]} ${outlineMap[color]} ${className}`}
       >
         {content}
       </span>
@@ -72,8 +71,7 @@ export default function Badge({
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset transition-colors ${colorMap[color]} ${className}`}
-      className={`inline-flex items-center gap-1 rounded-full font-medium ring-1 ring-inset ${sizeMap[size]} ${colorMap[color]} ${className}`}
+      className={`inline-flex items-center gap-1 rounded-full font-medium ring-1 ring-inset transition-colors ${sizeMap[size]} ${colorMap[color]} ${className}`}
     >
       {content}
     </span>

@@ -133,8 +133,6 @@ input:focus, textarea:focus, select:focus {
   outline: none !important;
 }
 
-/* Helper Utilities */
-
 .accent-line {
   height: 1px;
   width: 100%;
@@ -209,6 +207,12 @@ input:focus, textarea:focus, select:focus {
   input:focus, textarea:focus, select:focus {
     border-color: var(--color-primary-400) !important;
     box-shadow: 0 0 0 3px hsla(215, 91%, 46%, 0.2) !important;
+  }
+
+  .form-input {
+    background-color: var(--color-neutral-100);
+    color: var(--color-neutral-900);
+    border-color: var(--color-neutral-200);
   }
 }
 

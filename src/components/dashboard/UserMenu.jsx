@@ -5,10 +5,14 @@ import { User, Settings, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import Avatar from '../ui/Avatar';
 
-export default function UserMenu() {
+export default function UserMenu({ name, subtitle, initials }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const { user, logout } = useAuth();
+
+  const displayName = name ?? user?.name;
+  const displaySubtitle = subtitle ?? user?.email;
+  const displayInitials = initials ?? user?.initials ?? user?.name?.slice(0, 2);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -44,11 +48,11 @@ export default function UserMenu() {
         aria-haspopup="menu"
       >
         <div className="relative">
-          <Avatar initials={user?.initials || user?.name?.slice(0, 2)} size="sm" />
+          <Avatar initials={displayInitials} size="sm" />
           <span className="absolute -bottom-px -right-px h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500" aria-hidden="true" />
         </div>
         <span className="hidden text-sm font-semibold text-neutral-700 md:block max-w-[100px] truncate">
-          {user?.name?.split(' ')[0] || 'Account'}
+          {displayName?.split(' ')[0] || 'Account'}
         </span>
         <ChevronDown
           className={`hidden h-3.5 w-3.5 text-neutral-400 transition-transform duration-200 md:block ${isOpen ? 'rotate-180' : ''}`}
@@ -70,8 +74,8 @@ export default function UserMenu() {
           >
             {/* Header */}
             <div className="border-b border-neutral-100 px-3 py-2.5 mb-1">
-              <p className="text-sm font-semibold text-neutral-900 truncate">{user?.name || 'Guest User'}</p>
-              <p className="text-xs text-neutral-400 truncate">{user?.email || ''}</p>
+              <p className="text-sm font-semibold text-neutral-900 truncate">{displayName || 'Guest User'}</p>
+              <p className="text-xs text-neutral-400 truncate">{displaySubtitle || ''}</p>
             </div>
 
             {/* Items */}

@@ -4,8 +4,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import UserMenu from './UserMenu';
 
-export default function TopNav({ title, onMenuToggle }) {
+export default function TopNav({
+  title,
+  onMenuToggle,
+  searchPlaceholder = 'Search…',
+  notificationCount = 3,
+  notificationsPath = '/notifications',
+  profile,
+}) {
   const [showSearch, setShowSearch] = useState(false);
+
+  const notificationButton = (
+    <button
+      className="relative flex h-9 w-9 items-center justify-center rounded-xl text-neutral-600 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+      aria-label={`View notifications (${notificationCount} unread)`}
+    >
+      <Bell className="h-[18px] w-[18px]" aria-hidden="true" />
+      {notificationCount > 0 && (
+        <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white ring-2 ring-white">
+          {notificationCount}
+        </span>
+      )}
+    </button>
+  );
 
   return (
     <header className="sticky top-0 z-30 h-[64px] border-b border-neutral-200 bg-white">
@@ -36,13 +57,11 @@ export default function TopNav({ title, onMenuToggle }) {
             />
             <input
               type="text"
-              placeholder="Search…"
+              placeholder={searchPlaceholder}
               className="h-8 w-44 rounded-xl border border-neutral-200 bg-neutral-50 pl-8 pr-10 text-sm text-neutral-900 transition-all duration-200 placeholder:text-neutral-400 hover:border-neutral-300 hover:bg-white focus:w-60 focus:border-primary-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/15"
               aria-label="Search the dashboard"
             />
-            <kbd className="pointer-events-none absolute right-2.5 hidden h-4 items-center rounded border border-neutral-200 bg-white px-1 font-mono text-[9px] text-neutral-400 sm:flex">
-              ⌘K
-            </kbd>
+
           </div>
 
           {/* Mobile search toggle */}
@@ -59,21 +78,17 @@ export default function TopNav({ title, onMenuToggle }) {
           </button>
 
           {/* Notifications */}
-          <Link to="/notifications" tabIndex={-1}>
-            <button
-              className="relative flex h-9 w-9 items-center justify-center rounded-xl text-neutral-600 transition-colors hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-              aria-label="View notifications (3 unread)"
-            >
-              <Bell className="h-[18px] w-[18px]" aria-hidden="true" />
-              <span className="absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white ring-2 ring-white">
-                3
-              </span>
-            </button>
-          </Link>
+          {notificationsPath ? (
+            <Link to={notificationsPath} tabIndex={-1}>
+              {notificationButton}
+            </Link>
+          ) : (
+            notificationButton
+          )}
 
           <div className="mx-1 h-5 w-px bg-neutral-200" aria-hidden="true" />
 
-          <UserMenu />
+          <UserMenu {...profile} />
         </div>
       </div>
 
@@ -90,7 +105,7 @@ export default function TopNav({ title, onMenuToggle }) {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder={searchPlaceholder}
                 className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-4 pr-10 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors focus:border-primary-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-50"
                 aria-label="Search"
                 autoFocus

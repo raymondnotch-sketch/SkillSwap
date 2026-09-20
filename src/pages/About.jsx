@@ -74,20 +74,6 @@ export default function About() {
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
             <Card className="flex h-full flex-col p-8 sm:p-10">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 font-bold">
-                <Target className="h-6 w-6" aria-hidden="true" />
-              </div>
-              <h2 className="mt-6 text-2xl font-bold tracking-tight text-neutral-900">
-                Our Mission
-              </h2>
-              <p className="mt-3 text-base leading-relaxed text-neutral-600">
-                To create a trusted platform where every student can freely share their knowledge,
-                learn new skills, and build meaningful connections — regardless of their background
-                or experience level.
-              </p>
-            </Card>
-
-            <Card className="flex h-full flex-col p-8 sm:p-10">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 font-bold">
                 <Eye className="h-6 w-6" aria-hidden="true" />
               </div>
               <h2 className="mt-6 text-2xl font-bold tracking-tight text-neutral-900">
@@ -118,17 +104,17 @@ export default function About() {
               </h2>
               <div className="mt-4 space-y-4 text-base leading-relaxed text-neutral-600">
                 <p>
-                  SkillSwap started when a group of university students realized that the
-                  most effective study sessions happened outside the classroom — between peers
-                  teaching each other.
+
                 </p>
                 <p>
-                  We noticed that students who explained concepts to others retained information far
-                  better, and those who struggled found more patience and clarity from fellow
-                  students than from traditional resources.
+                  We realized that the best learning we've done wasn't in a classroom... it was in conversations with 
+                  classmates who took the time to break things down, who answered questions without judgment, who 
+                  understood exactly where we were stuck. That's when we decided: what if we could make that easier? 
+                  What if every student could find someone willing to teach what they know, and help with what they're 
+                  learning?
                 </p>
                 <p>
-                  Our goal remains simple: make peer learning accessible, safe, and rewarding for every student.
+
                 </p>
               </div>
             </div>
