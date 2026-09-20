@@ -1,24 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Eye } from 'lucide-react';
 import Badge from '../ui/Badge';
 import Avatar from '../ui/Avatar';
 import Button from '../ui/Button';
 import Dialog from '../ui/Dialog';
-import { pendingVerifications } from '../../data/verifications';
+import * as adminService from '../../services/admin';
 
 export default function VerificationTable() {
+  const [pendingList, setPendingList] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [approving, setApproving] = useState({});
   const [rejecting, setRejecting] = useState({});
 
-  const handleApprove = (id) => {
+  useEffect(() => {
+    async function load() {
+      const data = await adminService.getPendingVerifications();
+      setPendingList(Array.isArray(data) ? data : []);
+    }
+    load();
+  }, []);
+
+  const handleApprove = async (id) => {
     setApproving((p) => ({ ...p, [id]: true }));
-    setTimeout(() => setApproving((p) => ({ ...p, [id]: false })), 800);
+    try {
+      await adminService.approveVerification(id);
+      setPendingList((prev) => prev.filter((item) => item.id !== id));
+    } catch (e) {
+      console.warn('Approve failed:', e);
+    } finally {
+      setApproving((p) => ({ ...p, [id]: false }));
+    }
   };
 
-  const handleReject = (id) => {
+  const handleReject = async (id) => {
     setRejecting((p) => ({ ...p, [id]: true }));
-    setTimeout(() => setRejecting((p) => ({ ...p, [id]: false })), 800);
+    try {
+      await adminService.rejectVerification(id);
+      setPendingList((prev) => prev.filter((item) => item.id !== id));
+    } catch (e) {
+      console.warn('Reject failed:', e);
+    } finally {
+      setRejecting((p) => ({ ...p, [id]: false }));
+    }
   };
 
   return (
@@ -35,52 +58,65 @@ export default function VerificationTable() {
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
-            {pendingVerifications.map((v) => (
-              <tr key={v.id} className="transition-colors hover:bg-neutral-50/50">
-                <td className="py-3 pl-4 pr-3">
-                  <div className="flex items-center gap-3">
-                    <Avatar initials={v.avatar} size="sm" />
-                    <div>
-                      <p className="font-medium text-neutral-900">{v.name}</p>
-                      <p className="text-xs text-neutral-500">{v.email}</p>
-                    </div>
-                  </div>
-                </td>
-                <td className="hidden py-3 px-3 text-neutral-600 sm:table-cell">{v.university}</td>
-                <td className="hidden py-3 px-3 text-neutral-500 md:table-cell">{v.submittedAt}</td>
-                <td className="hidden py-3 px-3 lg:table-cell">
-                  <button
-                    onClick={() => setSelectedId(v.idPreview)}
-                    className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-primary-600 transition-colors hover:bg-primary-50"
-                  >
-                    <Eye className="h-3 w-3" />
-                    View
-                  </button>
-                </td>
-                <td className="py-3 pr-4 pl-3">
-                  <div className="flex items-center justify-end gap-1.5">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      icon={XCircle}
-                      onClick={() => handleReject(v.id)}
-                      loading={rejecting[v.id]}
-                    >
-                      <span className="hidden sm:inline">Reject</span>
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="success"
-                      icon={CheckCircle}
-                      onClick={() => handleApprove(v.id)}
-                      loading={approving[v.id]}
-                    >
-                      <span className="hidden sm:inline">Approve</span>
-                    </Button>
-                  </div>
+            {pendingList.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="py-8 text-center text-xs text-neutral-500">
+                  No pending verifications.
                 </td>
               </tr>
-            ))}
+            ) : (
+              pendingList.map((v) => (
+                <tr key={v.id} className="transition-colors hover:bg-neutral-50/50">
+                  <td className="py-3 pl-4 pr-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar initials={v.full_name ? v.full_name.slice(0, 2).toUpperCase() : 'U'} size="sm" />
+                      <div>
+                        <p className="font-medium text-neutral-900">{v.full_name}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="hidden py-3 px-3 text-neutral-600 sm:table-cell">{v.school}</td>
+                  <td className="hidden py-3 px-3 text-neutral-500 md:table-cell">
+                    {v.created_at ? new Date(v.created_at).toLocaleDateString() : 'Recent'}
+                  </td>
+                  <td className="hidden py-3 px-3 lg:table-cell">
+                    {v.student_id_url ? (
+                      <button
+                        onClick={() => setSelectedId(v.student_id_url)}
+                        className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-primary-600 transition-colors hover:bg-primary-50"
+                      >
+                        <Eye className="h-3 w-3" />
+                        View ID
+                      </button>
+                    ) : (
+                      <span className="text-xs text-neutral-400">No document</span>
+                    )}
+                  </td>
+                  <td className="py-3 pr-4 pl-3">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        icon={XCircle}
+                        onClick={() => handleReject(v.id)}
+                        loading={rejecting[v.id]}
+                      >
+                        <span className="hidden sm:inline">Reject</span>
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="success"
+                        icon={CheckCircle}
+                        onClick={() => handleApprove(v.id)}
+                        loading={approving[v.id]}
+                      >
+                        <span className="hidden sm:inline">Approve</span>
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

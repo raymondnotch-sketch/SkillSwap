@@ -1,13 +1,21 @@
-import { globalRankings, schoolRankings } from '../data/leaderboard';
-
-const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
+import { request } from './api.js';
 
 export async function getGlobalRankings() {
-  await delay();
-  return globalRankings;
+  try {
+    const suggestions = await request('/matches/suggestions?limit=50').catch(() => []);
+    if (!Array.isArray(suggestions)) return [];
+    return suggestions.map((s, idx) => ({
+      rank: idx + 1,
+      name: s.user?.full_name || 'Student Mentor',
+      school: s.user?.school || 'University',
+      points: s.user?.reputation_score * 100 || 500,
+      avatar: s.user?.avatar_url || '',
+    }));
+  } catch (error) {
+    return [];
+  }
 }
 
 export async function getSchoolRankings() {
-  await delay();
-  return schoolRankings;
+  return getGlobalRankings();
 }

@@ -25,50 +25,47 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-all duration-200 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-xl border-b border-neutral-200/80 shadow-sm'
-          : 'bg-white/80 backdrop-blur-lg border-b border-neutral-100'
+          ? 'bg-white border-b border-neutral-200 shadow-xs'
+          : 'bg-white/90 border-b border-neutral-100'
       }`}
     >
-      {/* Top accent gradient line */}
-      <div className="accent-line" />
-
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8 h-16">
 
         {/* ── Logo ── */}
         <Link
           to="/"
-          className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-xl"
+          className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg"
         >
-          <div className="gradient-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-indigo-500/30 transition-all duration-200 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-indigo-500/40">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white shadow-xs">
             S
           </div>
-          <span className="font-bold text-neutral-900 text-[15px] tracking-tight">
+          <span className="font-bold text-neutral-900 text-base tracking-tight">
             {APP_NAME}
           </span>
         </Link>
 
         {/* ── Desktop Nav Links ── */}
-        <div className="hidden items-center gap-0.5 lg:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.path}
               to={link.path}
-              className="relative px-3.5 py-2 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+              className="relative px-3 py-1.5 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >
               {isActive(link.path) && (
                 <motion.span
                   layoutId="navbar-pill"
-                  className="absolute inset-0 rounded-xl bg-primary-50"
-                  transition={{ type: 'spring', bounce: 0.18, duration: 0.45 }}
+                  className="absolute inset-0 rounded-lg bg-primary-50"
+                  transition={{ type: 'spring', bounce: 0.15, duration: 0.3 }}
                 />
               )}
               <span
                 className={`relative z-10 block text-sm font-medium transition-colors duration-150 ${
                   isActive(link.path)
                     ? 'text-primary-700 font-semibold'
-                    : 'text-neutral-500 hover:text-neutral-900'
+                    : 'text-neutral-600 hover:text-neutral-900'
                 }`}
               >
                 {link.label}
@@ -81,22 +78,18 @@ export default function Navbar() {
         <div className="hidden items-center gap-2 lg:flex">
           <Link
             to="/login"
-            className="flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium text-neutral-600 transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+            className="flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >
             <LogIn className="h-4 w-4" aria-hidden="true" />
             Log in
           </Link>
           <Link
             to="/signup"
-            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-xl"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
           >
-            <button className="gradient-primary group relative overflow-hidden rounded-xl px-5 py-2 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition-all duration-200 hover:shadow-lg hover:shadow-indigo-500/35 hover:-translate-y-px active:translate-y-0 active:shadow-md focus:outline-none">
-              <span className="relative z-10 flex items-center gap-1.5">
-                Get Started
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
-              </span>
-              {/* Shimmer sweep */}
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+            <button className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-xs transition-colors duration-150 hover:bg-primary-700 focus:outline-none">
+              Get Started
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
           </Link>
         </div>
@@ -104,7 +97,7 @@ export default function Navbar() {
         {/* ── Mobile Hamburger ── */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex h-9 w-9 items-center justify-center rounded-xl text-neutral-600 transition-colors hover:bg-neutral-100 lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100 lg:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
@@ -143,7 +136,7 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             className="overflow-hidden border-t border-neutral-100 bg-white lg:hidden"
           >
             <div className="px-4 pb-5 pt-2 space-y-0.5">
@@ -152,12 +145,12 @@ export default function Navbar() {
                   key={link.path}
                   initial={{ x: -16, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.04, duration: 0.2 }}
+                  transition={{ delay: index * 0.03, duration: 0.15 }}
                 >
                   <Link
                     to={link.path}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                    className={`flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                       isActive(link.path)
                         ? 'bg-primary-50 text-primary-700 font-semibold'
                         : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
@@ -172,24 +165,14 @@ export default function Navbar() {
               ))}
 
               {/* Divider */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: NAV_LINKS.length * 0.04 }}
-                className="mx-3.5 my-3 h-px bg-neutral-100"
-              />
+              <div className="mx-3 my-3 h-px bg-neutral-100" />
 
               {/* Mobile auth buttons */}
-              <motion.div
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: NAV_LINKS.length * 0.04 + 0.05, duration: 0.22 }}
-                className="space-y-2 pt-1"
-              >
+              <div className="space-y-2 pt-1">
                 <Link
                   to="/login"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-700 transition-all duration-150 hover:bg-neutral-50 hover:border-neutral-300 active:scale-[0.98]"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition-colors duration-150 hover:bg-neutral-50"
                 >
                   <LogIn className="h-4 w-4" aria-hidden="true" />
                   Log in
@@ -197,14 +180,12 @@ export default function Navbar() {
                 <Link
                   to="/signup"
                   onClick={() => setIsOpen(false)}
-                  className="gradient-primary group relative flex items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/25 transition-all duration-200 active:scale-[0.98]"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-xs transition-colors duration-150 hover:bg-primary-700"
                 >
-                  <Sparkles className="h-4 w-4" aria-hidden="true" />
                   Get Started Free
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-active:translate-x-full" />
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         )}

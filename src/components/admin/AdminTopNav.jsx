@@ -5,7 +5,7 @@ import Avatar from '../ui/Avatar';
 
 export default function AdminTopNav({ title, onMenuToggle }) {
   return (
-    <header className="sticky top-0 z-20 border-b border-neutral-200/60 bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-20 border-b border-neutral-200 bg-white">
       <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
           <button

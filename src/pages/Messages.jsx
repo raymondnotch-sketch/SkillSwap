@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Search, Send, Phone, Video, MoreVertical, Paperclip,
@@ -9,16 +9,53 @@ import Avatar from '../components/ui/Avatar';
 import Button from '../components/ui/Button';
 import SearchBar from '../components/ui/SearchBar';
 import EmptyState from '../components/ui/EmptyState';
-import { conversations, sampleMessages } from '../data/messages';
+import * as messagesService from '../services/messages';
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function Messages() {
+  const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
+  const [messagesList, setMessagesList] = useState([]);
   const [messageText, setMessageText] = useState('');
   const [search, setSearch] = useState('');
 
+  useEffect(() => {
+    async function loadConvs() {
+      const data = await messagesService.getConversations();
+      setConversations(Array.isArray(data) ? data : []);
+      if (data.length > 0 && !selectedConversation) {
+        setSelectedConversation(data[0].id);
+      }
+    }
+    loadConvs();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedConversation) return;
+    async function loadMsgs() {
+      const msgs = await messagesService.getMessages(selectedConversation);
+      setMessagesList(Array.isArray(msgs) ? msgs : []);
+    }
+    loadMsgs();
+  }, [selectedConversation]);
+
+  const handleSend = async () => {
+    if (!messageText.trim() || !selectedConversation) return;
+    const textToSend = messageText.trim();
+    setMessageText('');
+    const newMsg = await messagesService.sendMessage(selectedConversation, textToSend);
+    if (newMsg) {
+      setMessagesList((prev) => [...prev, newMsg]);
+    } else {
+      setMessagesList((prev) => [
+        ...prev,
+        { id: Date.now(), text: textToSend, isMe: true, time: 'Just now' },
+      ]);
+    }
+  };
+
   const filteredConversations = conversations.filter((c) =>
-    c.name.toLowerCase().includes(search.toLowerCase())
+    (c.name || '').toLowerCase().includes(search.toLowerCase())
   );
 
   const activeConversation = conversations.find((c) => c.id === selectedConversation);
@@ -164,7 +201,7 @@ export default function Messages() {
             {/* Messages Area */}
             <div className="flex-1 space-y-1 overflow-y-auto px-6 py-6">
               <div className="flex flex-col gap-4">
-                {sampleMessages.map((msg) => (
+                {messagesList.map((msg) => (
                   <div
                     key={msg.id}
                     className={`flex items-end gap-3 ${msg.isMe ? 'justify-end' : 'justify-start'}`}
@@ -182,27 +219,14 @@ export default function Messages() {
                             : 'rounded-bl-sm border border-neutral-100 bg-white text-neutral-900'
                         }`}
                       >
-                        <p className="text-sm leading-relaxed">{msg.text}</p>
+                        <p className="text-sm leading-relaxed">{msg.content || msg.text}</p>
                       </div>
                       <p className={`px-1 text-xs ${msg.isMe ? 'text-right text-neutral-400' : 'text-neutral-400'}`}>
-                        {msg.time}
+                        {msg.time || (msg.created_at ? new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '')}
                       </p>
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* Typing Indicator */}
-              <div className="flex items-center gap-3 pt-2">
-                <Avatar initials={activeConversation.avatar} size="sm" />
-                <div className="flex items-center gap-2 rounded-2xl border border-neutral-100 bg-white px-5 py-3.5 shadow-sm">
-                  <div className="flex gap-1.5">
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-neutral-400" style={{ animationDelay: '0ms' }} />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-neutral-400" style={{ animationDelay: '150ms' }} />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-neutral-400" style={{ animationDelay: '300ms' }} />
-                  </div>
-                </div>
-                <span className="text-xs font-medium text-neutral-400">Emily is typing...</span>
               </div>
             </div>
 
@@ -223,13 +247,14 @@ export default function Messages() {
                   placeholder="Type a message..."
                   className="flex-1 bg-transparent py-2 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && messageText.trim()) {
-                      setMessageText('');
+                    if (e.key === 'Enter') {
+                      handleSend();
                     }
                   }}
                 />
                 <Button variant="ghost" size="icon" icon={Smile} aria-label="Add emoji" className="shrink-0 text-neutral-400" />
                 <button
+                  onClick={handleSend}
                   aria-label="Send message"
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl gradient-primary text-white shadow-md shadow-indigo-500/30 transition-all duration-150 hover:scale-105 hover:shadow-lg"
                 >

@@ -2,7 +2,8 @@ import {
   CheckCircle, XCircle, AlertTriangle, ShieldOff,
   Ban, Flag, UserCheck, Settings,
 } from 'lucide-react';
-import { activities } from '../../data/activity';
+import { useState, useEffect } from 'react';
+import * as adminService from '../../services/admin';
 
 const getActivityIcon = (action) => {
   if (action.includes('verified') || action.includes('approved')) return { icon: CheckCircle, color: 'bg-emerald-100 text-emerald-600' };
@@ -16,6 +17,20 @@ const getActivityIcon = (action) => {
 };
 
 export default function ActivityTimeline() {
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      const data = await adminService.getActivityLog();
+      setActivities(Array.isArray(data) ? data : []);
+    }
+    load();
+  }, []);
+
+  if (activities.length === 0) {
+    return <p className="text-xs text-neutral-500">No activity logged yet.</p>;
+  }
+
   return (
     <div className="space-y-0">
       {activities.map((activity, index) => {

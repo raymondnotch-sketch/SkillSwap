@@ -26,3 +26,17 @@ export function me(token) {
     token,
   });
 }
+
+export function forgotPassword(email) {
+  return request('/auth/forgot-password', {
+    method: 'POST',
+    data: { email },
+  });
+}
+
+export function resetPassword(access_token, new_password) {
+  return request('/auth/reset-password', {
+    method: 'POST',
+    data: { access_token, new_password },
+  });
+}

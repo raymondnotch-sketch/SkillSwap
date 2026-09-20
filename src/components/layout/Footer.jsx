@@ -16,41 +16,28 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
 
         {/* ── Newsletter / CTA strip ── */}
-        <div className="py-12">
-          <div className="gradient-primary relative overflow-hidden rounded-2xl px-6 py-10 text-white sm:px-10">
-            {/* Dot pattern overlay */}
-            <div
-              className="absolute inset-0 opacity-[0.06] pointer-events-none"
-              style={{
-                backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-                backgroundSize: '24px 24px',
-              }}
-            />
-            <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-
-            <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="py-10">
+          <div className="rounded-xl border border-neutral-200 bg-neutral-900 px-6 py-8 text-white sm:px-8">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
-                <p className="text-xs font-semibold uppercase tracking-widest text-indigo-200">Stay in the loop</p>
-                <h3 className="mt-1 text-lg font-bold text-white sm:text-xl">Get the latest from SkillSwap</h3>
-                <p className="mt-1 text-sm text-indigo-200">New skill categories, community updates, and learning tips.</p>
+                <h3 className="text-lg font-bold text-white">Stay updated with SkillSwap</h3>
+                <p className="mt-1 text-sm text-neutral-400">New skill categories, platform updates, and learning guides.</p>
               </div>
               <div className="flex w-full max-w-xs shrink-0 items-center gap-2">
                 <div className="relative flex-1">
-                  <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-indigo-300" aria-hidden="true" />
+                  <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" aria-hidden="true" />
                   <input
                     type="email"
                     placeholder="your@email.com"
-                    className="w-full rounded-xl border border-white/20 bg-white/10 py-2.5 pl-9 pr-3 text-sm text-white placeholder:text-indigo-300 backdrop-blur-sm focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20"
+                    className="w-full rounded-lg border border-neutral-700 bg-neutral-800 py-2 pl-9 pr-3 text-sm text-white placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     aria-label="Email for newsletter"
                   />
                 </div>
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-indigo-700 shadow-sm transition-all hover:bg-indigo-50 hover:shadow-md active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-xs transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                 >
                   Subscribe
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -61,11 +48,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-x-8 gap-y-10 pb-10 md:grid-cols-5 md:gap-x-10">
           {/* Brand col — spans 2 on md */}
           <div className="col-span-2">
-            <Link to="/" className="group flex items-center gap-2.5 w-fit">
-              <div className="gradient-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-indigo-500/20 transition-transform duration-200 group-hover:scale-110">
+            <Link to="/" className="flex items-center gap-2.5 w-fit">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white shadow-xs">
                 S
               </div>
-              <span className="font-bold text-neutral-900 text-[15px] tracking-tight">
+              <span className="font-bold text-neutral-900 text-base tracking-tight">
                 {APP_NAME}
               </span>
             </Link>

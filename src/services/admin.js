@@ -1,67 +1,71 @@
-import { reports, priorityBadge, statusBadge } from '../data/reports';
-import { users, userStatusBadge } from '../data/users';
-import { pendingVerifications } from '../data/verifications';
-import { activities } from '../data/activity';
-import { adminStats, recentVerifications, recentReports, quickActions } from '../data/admin';
-
-const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
-
-export async function getAdminStats() {
-  await delay();
-  return adminStats;
-}
-
-export async function getRecentVerifications() {
-  await delay();
-  return recentVerifications;
-}
-
-export async function getRecentReports() {
-  await delay();
-  return recentReports;
-}
-
-export async function getQuickActions() {
-  await delay();
-  return quickActions;
-}
-
-export async function getUsers() {
-  await delay();
-  return { users, statusBadge: userStatusBadge };
-}
+import { request } from './api.js';
 
 export async function getPendingVerifications() {
-  await delay();
-  return pendingVerifications;
-}
-
-export async function getReports() {
-  await delay();
-  return { reports, priorityBadge, statusBadge };
-}
-
-export async function getActivityLog() {
-  await delay();
-  return activities;
+  try {
+    const data = await request('/admin/verifications/pending');
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.warn('Failed to fetch pending verifications:', error);
+    return [];
+  }
 }
 
 export async function approveVerification(id) {
-  await delay(500);
-  return { success: true, id };
+  return request(`/admin/verifications/${id}`, {
+    method: 'PATCH',
+    data: { status: 'verified' },
+  });
 }
 
 export async function rejectVerification(id) {
-  await delay(500);
-  return { success: true, id };
+  return request(`/admin/verifications/${id}`, {
+    method: 'PATCH',
+    data: { status: 'rejected' },
+  });
 }
 
-export async function resolveReport(id, action) {
-  await delay(500);
-  return { success: true, id, action };
+export async function getReports(status) {
+  try {
+    const data = await request(`/admin/reports${status ? `?status=${status}` : ''}`);
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.warn('Failed to fetch admin reports:', error);
+    return [];
+  }
 }
 
-export async function updateUserStatus(id, status) {
-  await delay(500);
-  return { success: true, id, status };
+export async function resolveReport(id, status = 'resolved') {
+  return request(`/admin/reports/${id}`, {
+    method: 'PATCH',
+    data: { status },
+  });
+}
+
+export async function getAdminStats() {
+  try {
+    const [pendingVerifs, reportsList] = await Promise.all([
+      getPendingVerifications(),
+      getReports(),
+    ]);
+
+    return {
+      pendingVerificationsCount: pendingVerifs.length,
+      openReportsCount: reportsList.filter((r) => r.status !== 'resolved').length,
+      totalUsers: 0,
+    };
+  } catch (error) {
+    return { pendingVerificationsCount: 0, openReportsCount: 0, totalUsers: 0 };
+  }
+}
+
+export async function getRecentVerifications() {
+  return getPendingVerifications();
+}
+
+export async function getRecentReports() {
+  return getReports();
+}
+
+export async function getActivityLog() {
+  return [];
 }

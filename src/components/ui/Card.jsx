@@ -2,23 +2,23 @@ import { motion } from 'framer-motion';
 
 const variantStyles = {
   default:
-    'rounded-2xl border border-neutral-200 bg-white shadow-card',
+    'rounded-xl border border-neutral-200 bg-white shadow-xs',
   interactive:
-    'rounded-2xl border border-neutral-200 bg-white shadow-card cursor-pointer transition-colors hover:border-neutral-300',
+    'rounded-xl border border-neutral-200 bg-white shadow-xs cursor-pointer transition-all hover:border-neutral-300 hover:shadow-sm',
   info:
-    'rounded-2xl border border-primary-100 bg-primary-50/60',
+    'rounded-xl border border-primary-200 bg-primary-50/50',
   success:
-    'rounded-2xl border border-success-100 bg-success-50/60',
+    'rounded-xl border border-success-200 bg-success-50/50',
   warning:
-    'rounded-2xl border border-warning-100 bg-warning-50/60',
+    'rounded-xl border border-warning-200 bg-warning-50/50',
   danger:
-    'rounded-2xl border border-danger-100 bg-danger-50/60',
+    'rounded-xl border border-danger-200 bg-danger-50/50',
   stat:
-    'rounded-2xl border border-neutral-200 bg-white shadow-card text-center',
+    'rounded-xl border border-neutral-200 bg-white shadow-xs text-center',
   glass:
-    'glass rounded-2xl',
+    'rounded-xl border border-neutral-200 bg-white shadow-xs',
   gradient:
-    'rounded-2xl bg-gradient-to-br from-primary-600 to-accent-600 text-white shadow-lg',
+    'rounded-xl border border-neutral-200 bg-white shadow-xs text-neutral-900',
 };
 
 export default function Card({
@@ -31,12 +31,8 @@ export default function Card({
   const Component = hover ? motion.div : 'div';
   const motionProps = hover
     ? {
-        whileHover: {
-          y: -3,
-          boxShadow:
-            'var(--shadow-card-hover, 0 20px 60px -12px rgba(0,0,0,0.15), 0 8px 16px -8px rgba(0,0,0,0.10))',
-        },
-        transition: { duration: 0.2, ease: 'easeOut' },
+        whileHover: { y: -1 },
+        transition: { duration: 0.15 },
       }
     : {};
 
@@ -50,3 +46,4 @@ export default function Card({
     </Component>
   );
 }
+

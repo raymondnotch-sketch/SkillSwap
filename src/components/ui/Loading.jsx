@@ -68,29 +68,17 @@ function LoadingSpinner({ message }) {
 // Logo-based loading animation
 export function LoadingLogo({ message = 'Loading SkillSwap...' }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-50 via-white to-accent-50">
+    <div className="flex min-h-screen items-center justify-center bg-white">
       <div className="flex flex-col items-center gap-6">
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }}
           className="relative"
         >
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-600 to-accent-600 text-3xl font-bold text-white shadow-2xl shadow-primary-500/40">
+          <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-primary-600 text-2xl font-bold text-white shadow-xs">
             S
           </div>
-          <motion.div
-            className="absolute -inset-2 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 opacity-40 blur-xl"
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.4, 0.6, 0.4],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
         </motion.div>
         
         <div className="flex flex-col items-center gap-3">

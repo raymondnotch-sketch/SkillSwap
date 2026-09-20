@@ -67,7 +67,7 @@ export default function Leaderboard() {
           >
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <Trophy className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white/90 text-sm font-semibold uppercase tracking-wider">Rankings</span>
@@ -81,33 +81,29 @@ export default function Leaderboard() {
             </div>
             
             {/* View Toggle */}
-            <div className="flex gap-2 rounded-2xl bg-white/10 backdrop-blur-md p-2 border border-white/20">
-              <motion.button
+            <div className="flex gap-2 rounded-xl bg-white/10 p-2 border border-white/20">
+              <button
                 onClick={() => setView('school')}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all ${
+                className={`flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors ${
                   view === 'school'
-                    ? 'bg-white text-orange-600 shadow-lg'
+                    ? 'bg-white text-neutral-900 shadow-xs'
                     : 'text-white/80 hover:text-white'
                 }`}
               >
                 <Trophy className="h-4 w-4" />
                 School
-              </motion.button>
-              <motion.button
+              </button>
+              <button
                 onClick={() => setView('global')}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all ${
+                className={`flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors ${
                   view === 'global'
-                    ? 'bg-white text-orange-600 shadow-lg'
+                    ? 'bg-white text-neutral-900 shadow-xs'
                     : 'text-white/80 hover:text-white'
                 }`}
               >
                 <Globe className="h-4 w-4" />
                 Global
-              </motion.button>
+              </button>
             </div>
           </motion.div>
         </div>
@@ -189,7 +185,7 @@ export default function Leaderboard() {
                         <motion.div
                           whileHover={{ rotate: 360 }}
                           transition={{ duration: 0.6 }}
-                          className={`w-16 h-16 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center ${entry.rank === 1 ? 'ring-4 ring-white/50' : ''}`}
+                          className={`w-16 h-16 rounded-full bg-white/20 flex items-center justify-center ${entry.rank === 1 ? 'ring-4 ring-white/50' : ''}`}
                         >
                           <PodiumIcon className={`h-8 w-8 ${podiumData.text}`} />
                         </motion.div>
@@ -202,7 +198,7 @@ export default function Leaderboard() {
                         <h3 className={`text-lg font-bold ${podiumData.text} mb-1`}>
                           {entry.name}
                           {entry.isMe && (
-                            <span className="ml-2 text-xs font-normal bg-white/30 backdrop-blur-sm px-2 py-1 rounded-full">You</span>
+                            <span className="ml-2 text-xs font-normal bg-white/20 px-2 py-0.5 rounded-full">You</span>
                           )}
                         </h3>
                         <p className={`text-sm ${podiumData.text} opacity-80`}>
@@ -217,7 +213,7 @@ export default function Leaderboard() {
                         {entry.trend && <TrendIcon className={`h-6 w-6 ${trendColor}`} />}
                       </div>
                       
-                      <Badge color="neutral" variant="solid" className={`${podiumData.text} bg-white/30 backdrop-blur-sm border-white/40 text-xs font-bold`}>
+                      <Badge color="neutral" variant="solid" className={`${podiumData.text} bg-white/20 border-white/40 text-xs font-bold`}>
                         Level {entry.level}
                       </Badge>
 
