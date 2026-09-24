@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -8,9 +9,42 @@ import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import Button from '../components/ui/Button';
-import { skillsOffered, skillsWanted, reviews, gamificationBadges } from '../data/profile';
+import { useAuth } from '../hooks/useAuth';
+import * as profileService from '../services/profile';
 
 export default function Profile() {
+  const { user: authUser } = useAuth();
+  const [profile, setProfile] = useState(null);
+  const [mySkills, setMySkills] = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      if (authUser) {
+        try {
+          const [prof, sks] = await Promise.all([
+            profileService.getProfile(authUser.id),
+            profileService.getMySkills(),
+          ]);
+          setProfile(prof || authUser);
+          setMySkills(Array.isArray(sks) ? sks : []);
+        } catch (e) {
+          setProfile(authUser);
+        }
+      }
+    }
+    load();
+  }, [authUser]);
+
+  const displayUser = profile || authUser || {};
+  const offeredSkills = mySkills.filter((s) => s.direction === 'offered').map((s) => s.skill_name);
+  const wantedSkills = mySkills.filter((s) => s.direction === 'wanted').map((s) => s.skill_name);
+
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    const parts = name.split(' ');
+    return parts.length > 1 ? `${parts[0][0]}${parts[1][0]}`.toUpperCase() : name.slice(0, 2).toUpperCase();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -25,19 +59,25 @@ export default function Profile() {
         {/* Avatar — absolute bottom-0 left-8 translate-y-1/2 */}
         <div className="absolute bottom-0 left-8 translate-y-1/2 z-10">
           <div className="relative">
-            <div className="h-24 w-24 rounded-2xl ring-4 ring-white shadow-xl overflow-hidden bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
-              <span className="text-2xl font-bold text-white">AC</span>
-            </div>
-            <div className="absolute bottom-1 right-1 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 border-3 border-white shadow-md">
-              <CheckCircle className="h-4 w-4 text-white" />
-            </div>
+            {displayUser.avatar_url ? (
+              <img src={displayUser.avatar_url} alt={displayUser.full_name} className="h-24 w-24 rounded-2xl ring-4 ring-white shadow-xl object-cover" />
+            ) : (
+              <div className="h-24 w-24 rounded-2xl ring-4 ring-white shadow-xl overflow-hidden bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center">
+                <span className="text-2xl font-bold text-white">{getInitials(displayUser.full_name)}</span>
+              </div>
+            )}
+            {displayUser.verified && (
+              <div className="absolute bottom-1 right-1 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 border-3 border-white shadow-md">
+                <CheckCircle className="h-4 w-4 text-white" />
+              </div>
+            )}
           </div>
         </div>
 
         {/* Edit button in cover top-right */}
         <div className="absolute top-4 right-6">
           <Link to="/profile/edit">
-            <Button icon={Edit3} variant="outline" size="sm" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20">
+            <Button icon={Edit3} variant="outline" size="sm" className="bg-white text-neutral-800 border-white/50 hover:bg-neutral-100">
               Edit Profile
             </Button>
           </Link>
@@ -50,19 +90,25 @@ export default function Profile() {
           {/* Name + role badge */}
           <div className="mb-4">
             <div className="flex flex-wrap items-center gap-3 mb-1">
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900">Alex Chen</h1>
-              <Badge color="success" variant="solid" className="px-3 py-1">
-                <CheckCircle className="mr-1 h-3.5 w-3.5" />
-                Verified
-              </Badge>
-              <span className="inline-flex items-center rounded-full bg-indigo-100 text-indigo-700 px-3 py-1 text-xs font-semibold">
-                Computer Science Student
-              </span>
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900">{displayUser.full_name || 'User Profile'}</h1>
+              {displayUser.verified && (
+                <Badge color="success" variant="solid" className="px-3 py-1">
+                  <CheckCircle className="mr-1 h-3.5 w-3.5" />
+                  Verified
+                </Badge>
+              )}
+              {displayUser.department && (
+                <span className="inline-flex items-center rounded-full bg-indigo-100 text-indigo-700 px-3 py-1 text-xs font-semibold">
+                  {displayUser.department} Student
+                </span>
+              )}
             </div>
-            <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
-              <MapPin className="h-4 w-4" />
-              <span>California, USA</span>
-            </div>
+            {displayUser.school && (
+              <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
+                <MapPin className="h-4 w-4" />
+                <span>{displayUser.school}</span>
+              </div>
+            )}
           </div>
 
           {/* Stats Row */}
@@ -72,17 +118,8 @@ export default function Profile() {
                 <Star className="h-5 w-5 text-amber-600 fill-amber-500" />
               </div>
               <div>
-                <p className="text-xl font-bold text-slate-900">4.8</p>
-                <p className="text-xs text-slate-500">Rating</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100">
-                <MessageSquare className="h-5 w-5 text-indigo-600" />
-              </div>
-              <div>
-                <p className="text-xl font-bold text-slate-900">32</p>
-                <p className="text-xs text-slate-500">Sessions</p>
+                <p className="text-xl font-bold text-slate-900">{displayUser.reputation_score || 0}</p>
+                <p className="text-xs text-slate-500">Reputation</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -90,17 +127,8 @@ export default function Profile() {
                 <Award className="h-5 w-5 text-violet-600" />
               </div>
               <div>
-                <p className="text-xl font-bold text-slate-900">2,750</p>
-                <p className="text-xs text-slate-500">Points</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100">
-                <GraduationCap className="h-5 w-5 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-xl font-bold text-slate-900">24</p>
-                <p className="text-xs text-slate-500">Reviews</p>
+                <p className="text-xl font-bold text-slate-900">{displayUser.gamification_points || 0}</p>
+                <p className="text-xs text-slate-500 font-medium">Points ({displayUser.rank || 'Bronze'})</p>
               </div>
             </div>
           </div>
@@ -160,14 +188,18 @@ export default function Profile() {
             <div className="bg-white rounded-2xl shadow-card p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-4">Skills I Teach</h2>
               <div className="flex flex-wrap gap-2.5">
-                {skillsOffered.map((skill) => (
-                  <span
-                    key={skill}
-                    className="inline-flex items-center rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 px-4 py-1.5 text-sm font-semibold"
-                  >
-                    {skill}
-                  </span>
-                ))}
+                {offeredSkills.length === 0 ? (
+                  <p className="text-sm text-slate-500">No skills offered yet.</p>
+                ) : (
+                  offeredSkills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="inline-flex items-center rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 px-4 py-1.5 text-sm font-semibold"
+                    >
+                      {skill}
+                    </span>
+                  ))
+                )}
               </div>
             </div>
 
@@ -175,14 +207,18 @@ export default function Profile() {
             <div className="bg-white rounded-2xl shadow-card p-6">
               <h2 className="text-lg font-bold text-slate-900 mb-4">Skills I Want</h2>
               <div className="flex flex-wrap gap-2.5">
-                {skillsWanted.map((skill) => (
-                  <span
-                    key={skill}
-                    className="inline-flex items-center rounded-full bg-violet-50 border border-violet-200 text-violet-700 px-4 py-1.5 text-sm font-semibold"
-                  >
-                    {skill}
-                  </span>
-                ))}
+                {wantedSkills.length === 0 ? (
+                  <p className="text-sm text-slate-500">No skills requested yet.</p>
+                ) : (
+                  wantedSkills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="inline-flex items-center rounded-full bg-violet-50 border border-violet-200 text-violet-700 px-4 py-1.5 text-sm font-semibold"
+                    >
+                      {skill}
+                    </span>
+                  ))
+                )}
               </div>
             </div>
 

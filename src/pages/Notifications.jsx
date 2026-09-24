@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Bell, CheckCheck, MessageSquare, Handshake, Calendar,
@@ -8,7 +8,7 @@ import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
-import { notificationGroups } from '../data/notifications';
+import * as notificationsService from '../services/notifications';
 
 const notificationTypeConfig = {
   reminder: { icon: Clock, iconBg: 'bg-primary-100', iconColor: 'text-primary-600' },
@@ -20,8 +20,16 @@ const notificationTypeConfig = {
 };
 
 export default function Notifications() {
-  const [notifications, setNotifications] = useState(notificationGroups);
+  const [itemsList, setItemsList] = useState([]);
   const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    async function load() {
+      const data = await notificationsService.getNotifications();
+      setItemsList(Array.isArray(data) ? data : []);
+    }
+    load();
+  }, []);
 
   const filters = [
     { key: 'all', label: 'All', icon: Bell },
@@ -31,19 +39,21 @@ export default function Notifications() {
     { key: 'achievement', label: 'Achievements', icon: Award },
   ];
 
-  const markAllRead = () => {
-    setNotifications((prev) =>
-      prev.map((group) => ({
-        ...group,
-        items: group.items.map((item) => ({ ...item, read: true })),
-      }))
-    );
+  const markAllRead = async () => {
+    await notificationsService.markAllRead();
+    setItemsList((prev) => prev.map((item) => ({ ...item, read: true })));
   };
 
-  const unreadCount = notifications.reduce(
-    (sum, group) => sum + group.items.filter((i) => !i.read).length,
-    0
-  );
+  const unreadCount = itemsList.filter((i) => !i.read).length;
+
+  const notificationGroups = [
+    {
+      date: 'Recent Notifications',
+      items: itemsList,
+    },
+  ];
+
+  const notifications = notificationGroups;
 
   const filteredGroups = notifications.map((group) => {
     let items = group.items;
@@ -152,7 +162,8 @@ export default function Notifications() {
               {/* Notification Cards */}
               <div className="space-y-4">
                 {group.items.map((notif) => {
-                  const { icon: Icon, iconBg, iconColor } = notificationTypeConfig[notif.type];
+                  const config = notificationTypeConfig[notif.type] || notificationTypeConfig.system;
+                  const { icon: Icon, iconBg, iconColor } = config;
                   return (
                     <Card
                       key={notif.id}

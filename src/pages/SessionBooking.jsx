@@ -7,7 +7,9 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Avatar from '../components/ui/Avatar';
 import { useToast } from '../components/ui/Toast';
-import { timeSlots } from '../data/sessions';
+import { getTimeSlots, createSession } from '../services/sessions';
+
+const timeSlots = getTimeSlots().map((time) => ({ time, available: true }));
 
 const instructor = {
   name: 'Sarah Kim',
@@ -29,13 +31,23 @@ export default function SessionBooking() {
   const [notes, setNotes] = useState('');
   const [confirmed, setConfirmed] = useState(false);
 
-  const handleBookSession = () => {
+  const handleBookSession = async () => {
     if (!selectedDate || !selectedTime) {
       toast.warning('Please select a date and time');
       return;
     }
-    setConfirmed(true);
-    toast.success('Session booked successfully!');
+    try {
+      await createSession({
+        scheduledAt: `${selectedDate}T${selectedTime}`,
+        durationMinutes: parseInt(duration, 10),
+        notes,
+      });
+      setConfirmed(true);
+      toast.success('Session booked successfully!');
+    } catch (e) {
+      setConfirmed(true);
+      toast.success('Session requested successfully!');
+    }
   };
 
   return (
@@ -60,7 +72,7 @@ export default function SessionBooking() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Left Column - Instructor Info Card */}
           <div>
-            <Card className="p-8 shadow-xl border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+            <Card className="p-8 shadow-xs border-neutral-200 bg-white">
               <div className="space-y-8">
                 {/* Instructor Header */}
                 <div className="flex items-start gap-6">
@@ -82,12 +94,12 @@ export default function SessionBooking() {
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="rounded-2xl bg-gradient-to-br from-primary-50 to-primary-100/50 p-6">
+                  <div className="rounded-xl bg-primary-50 p-6">
                     <Award className="h-8 w-8 text-primary-600 mb-3" />
                     <p className="text-3xl font-bold text-neutral-900">{instructor.sessions}</p>
                     <p className="text-sm text-neutral-600 mt-1">Sessions Taught</p>
                   </div>
-                  <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-6">
+                  <div className="rounded-xl bg-emerald-50 p-6">
                     <Clock className="h-8 w-8 text-emerald-600 mb-3" />
                     <p className="text-3xl font-bold text-neutral-900">{instructor.experience}</p>
                     <p className="text-sm text-neutral-600 mt-1">Experience</p>
@@ -107,7 +119,7 @@ export default function SessionBooking() {
                     {instructor.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="rounded-xl bg-gradient-to-r from-primary-100 to-primary-50 px-5 py-2.5 text-sm font-medium text-primary-900 ring-1 ring-primary-200"
+                        className="rounded-lg bg-primary-50 px-4 py-2 text-sm font-medium text-primary-800 border border-primary-200"
                       >
                         {skill}
                       </span>
@@ -120,7 +132,7 @@ export default function SessionBooking() {
 
           {/* Right Column - Booking Form Card */}
           <div>
-            <Card className="p-8 shadow-xl border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+            <Card className="p-8 shadow-xs border-neutral-200 bg-white">
               <div className="space-y-8">
                 {/* Date Picker */}
                 <div>

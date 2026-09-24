@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -9,7 +10,7 @@ import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import Button from '../components/ui/Button';
-import { upcomingSessions, recentActivity, suggestedSkills, recentMessages, leaderboardPreview, notificationsPreview } from '../data/dashboard';
+import { getDashboardData } from '../services/dashboard';
 
 const activityIcons = {
   session: CheckCircle,
@@ -39,6 +40,31 @@ function StatCard({ icon: Icon, label, value, trend, color }) {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const [data, setData] = useState({
+    upcomingSessions: [],
+    recentActivity: [],
+    suggestedSkills: [],
+    recentMessages: [],
+    leaderboardPreview: [],
+    notificationsPreview: [],
+  });
+
+  useEffect(() => {
+    async function load() {
+      const res = await getDashboardData();
+      setData(res || {});
+    }
+    load();
+  }, []);
+
+  const {
+    upcomingSessions = [],
+    recentActivity = [],
+    suggestedSkills = [],
+    recentMessages = [],
+    leaderboardPreview = [],
+    notificationsPreview = [],
+  } = data;
 
   const greeting = (() => {
     const hour = new Date().getHours();

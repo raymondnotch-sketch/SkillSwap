@@ -29,10 +29,7 @@ export default function TopNav({
   );
 
   return (
-    <header className="sticky top-0 z-30 h-[64px] border-b border-neutral-100 bg-white/95 backdrop-blur-md">
-      {/* Accent line */}
-      <div className="accent-line" />
-
+    <header className="sticky top-0 z-30 h-[64px] border-b border-neutral-200 bg-white">
       <div className="flex h-full items-center justify-between px-5 sm:px-6">
 
         {/* Left: mobile menu + title */}

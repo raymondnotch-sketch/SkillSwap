@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const variants = {
   text: 'h-4 w-full',
   title: 'h-6 w-3/4',
@@ -8,7 +7,6 @@ const variants = {
   circle: 'rounded-full',
   rectangle: 'rounded-xl',
 };
-=======
 export default function Skeleton({ className = '', variant = 'text', count = 1 }) {
   const baseClasses = 'animate-pulse rounded-lg bg-neutral-200';
 
@@ -34,7 +32,6 @@ export default function Skeleton({ className = '', variant = 'text', count = 1 }
       </div>
     );
   }
->>>>>>> origin/main
 
 export default function Skeleton({ variant = 'text', className = '', ...props }) {
   return (
@@ -96,7 +93,7 @@ export function SkeletonStats() {
   );
 }
 
-export function SkeletonDashboard() {
+export function SkeletonDashboard(){
   return (
     <div className="space-y-8">
       {/* Header */}

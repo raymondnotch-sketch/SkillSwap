@@ -37,29 +37,18 @@ export default function Contact() {
       className="overflow-x-hidden"
     >
       {/* Hero */}
-      <section className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary-50 via-white to-accent-50/30" />
-        <div className="absolute right-0 top-0 -z-10 h-80 w-80 rounded-full bg-primary-100/30 blur-3xl" />
-
-        <div className="mx-auto max-w-3xl px-5 sm:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-white/80 px-4 py-2 text-sm font-medium text-primary-700 shadow-sm backdrop-blur-sm">
-              <MessageSquare className="h-4 w-4" />
-              Contact Us
-            </span>
-            <h1 className="mt-7 text-[2.5rem] font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-[3.5rem]">
-              Let&apos;s <span className="text-gradient">Talk</span>
-            </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-neutral-600 sm:text-lg">
-              Have a question, suggestion, or just want to say hello? We&apos;d love to hear from you.
-              Our team is always happy to help.
-            </p>
-          </motion.div>
+      <section className="border-b border-neutral-100 bg-neutral-50/50 py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl px-5 sm:px-8 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3.5 py-1.5 text-xs font-medium text-neutral-700 shadow-xs">
+            <MessageSquare className="h-4 w-4 text-primary-600" />
+            Contact Us
+          </span>
+          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
+            Let&apos;s <span className="text-primary-600">Talk</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-neutral-600 sm:text-lg">
+            Have a question, suggestion, or feedback? We&apos;d love to hear from you.
+          </p>
         </div>
       </section>
 

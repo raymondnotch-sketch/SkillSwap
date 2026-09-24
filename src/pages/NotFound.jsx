@@ -12,20 +12,11 @@ export default function NotFound() {
         transition={{ duration: 0.5 }}
         className="max-w-2xl w-full text-center space-y-10"
       >
-        {/* Large Gradient 404 Text */}
+        {/* 404 Text */}
         <div className="relative">
-          <motion.h1
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[12rem] font-black leading-none tracking-tighter bg-gradient-to-br from-primary-600 via-primary-500 to-primary-400 bg-clip-text text-transparent select-none"
-          >
+          <h1 className="text-8xl sm:text-9xl font-extrabold tracking-tight text-neutral-900 select-none">
             404
-          </motion.h1>
-          {/* Decorative blur effect */}
-          <div className="absolute inset-0 -z-10 blur-3xl opacity-30">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full" />
-          </div>
+          </h1>
         </div>
 
         {/* Illustration - Simple SVG Icon */}

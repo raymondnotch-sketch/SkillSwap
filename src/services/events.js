@@ -1,13 +1,12 @@
-import { events, eventFilters } from '../data/events';
-
-const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
-
 export async function getEvents() {
-  await delay();
-  return events;
+  return [];
 }
 
 export async function getEventFilters() {
-  await delay();
-  return eventFilters;
+  return [
+    { key: 'all', label: 'All Events' },
+    { key: 'upcoming', label: 'Upcoming' },
+    { key: 'workshop', label: 'Workshops' },
+    { key: 'webinar', label: 'Webinars' },
+  ];
 }

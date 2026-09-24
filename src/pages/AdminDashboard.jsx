@@ -10,11 +10,34 @@ import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import Button from '../components/ui/Button';
 import StatsCard from '../components/admin/StatsCard';
-import { recentVerifications, recentReports, quickActions } from '../data/admin';
+import { useState, useEffect } from 'react';
+import * as adminService from '../services/admin';
+
+const quickActions = [
+  { label: 'Verify IDs', icon: 'UserCheck', path: '/admin/verification', color: 'bg-emerald-100 text-emerald-600' },
+  { label: 'View Reports', icon: 'Flag', path: '/admin/reports', color: 'bg-red-100 text-red-600' },
+  { label: 'Manage Users', icon: 'Users', path: '/admin/users', color: 'bg-primary-100 text-primary-600' },
+  { label: 'System Logs', icon: 'Activity', path: '/admin/activity', color: 'bg-purple-100 text-purple-600' },
+];
 
 const actionIconMap = { UserCheck, Flag, Users, Activity };
 
 export default function AdminDashboard() {
+  const [pendingVerifs, setPendingVerifs] = useState([]);
+  const [reportsList, setReportsList] = useState([]);
+
+  useEffect(() => {
+    async function loadData() {
+      const [verifs, rpts] = await Promise.all([
+        adminService.getPendingVerifications(),
+        adminService.getReports(),
+      ]);
+      setPendingVerifs(Array.isArray(verifs) ? verifs : []);
+      setReportsList(Array.isArray(rpts) ? rpts : []);
+    }
+    loadData();
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -98,19 +121,22 @@ export default function AdminDashboard() {
             <Link to="/admin/verification" className="text-xs font-medium text-primary-600 hover:text-primary-700">View all</Link>
           </div>
           <div className="space-y-3">
-            {recentVerifications.map((v) => (
-              <div key={v.id} className="flex items-center gap-3 rounded-xl border border-neutral-100 p-3">
-                <Avatar initials={v.avatar} size="sm" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-neutral-900">{v.name}</p>
-                  <p className="text-xs text-neutral-500">{v.university}</p>
+            {pendingVerifs.length === 0 ? (
+              <p className="text-xs text-neutral-500">No pending verifications.</p>
+            ) : (
+              pendingVerifs.map((v) => (
+                <div key={v.id} className="flex items-center gap-3 rounded-xl border border-neutral-100 p-3">
+                  <Avatar initials={v.full_name ? v.full_name.slice(0, 2).toUpperCase() : 'U'} size="sm" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-neutral-900">{v.full_name}</p>
+                    <p className="text-xs text-neutral-500">{v.school}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button size="sm" variant="outline" icon={Eye}>Review</Button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-neutral-400">{v.time}</span>
-                  <Button size="sm" variant="outline" icon={Eye}>Review</Button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </Card>
 
@@ -120,19 +146,22 @@ export default function AdminDashboard() {
             <Link to="/admin/reports" className="text-xs font-medium text-primary-600 hover:text-primary-700">View all</Link>
           </div>
           <div className="space-y-3">
-            {recentReports.map((r) => (
-              <div key={r.id} className="rounded-xl border border-neutral-100 p-3">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-sm font-medium text-neutral-900">{r.reporter} → {r.reported}</p>
-                  <Badge color={r.priority === 'critical' ? 'danger' : 'warning'} variant="solid">{r.priority}</Badge>
+            {reportsList.length === 0 ? (
+              <p className="text-xs text-neutral-500">No recent reports.</p>
+            ) : (
+              reportsList.map((r) => (
+                <div key={r.id} className="rounded-xl border border-neutral-100 p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-sm font-medium text-neutral-900">{r.reporter_id} → {r.reported_id}</p>
+                    <Badge color={r.status === 'resolved' ? 'success' : 'warning'} variant="solid">{r.status || 'open'}</Badge>
+                  </div>
+                  <p className="text-xs text-neutral-500">{r.reason}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <Button size="sm" variant="ghost" icon={ArrowRight}>Review</Button>
+                  </div>
                 </div>
-                <p className="text-xs text-neutral-500">{r.reason}</p>
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-xs text-neutral-400">{r.time}</span>
-                  <Button size="sm" variant="ghost" icon={ArrowRight}>Review</Button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </Card>
       </div>

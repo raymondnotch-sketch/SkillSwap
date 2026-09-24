@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Users, Clock, CheckCircle2, XCircle, Play, Timer,
@@ -9,7 +9,7 @@ import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import Button from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
-import { matchTabs as tabs, matches } from '../data/matches';
+import * as matchesService from '../services/matches';
 
 const tabIconMap = { pending: Clock, accepted: CheckCircle2, active: Play, completed: Star, cancelled: XCircle };
 
@@ -132,7 +132,28 @@ function MatchCard({ match, tab }) {
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function Matches() {
   const [activeTab, setActiveTab] = useState('pending');
-  const currentMatches = matches[activeTab] || [];
+  const [tabs, setTabs] = useState([]);
+  const [allMatches, setAllMatches] = useState({
+    pending: [],
+    accepted: [],
+    active: [],
+    completed: [],
+    cancelled: [],
+  });
+
+  useEffect(() => {
+    async function loadData() {
+      const [tList, mList] = await Promise.all([
+        matchesService.getMatchTabs(),
+        matchesService.getMatches(),
+      ]);
+      setTabs(tList || []);
+      setAllMatches(mList || {});
+    }
+    loadData();
+  }, []);
+
+  const currentMatches = allMatches[activeTab] || [];
 
   return (
     <motion.div
@@ -152,8 +173,8 @@ export default function Matches() {
       {/* ── Tab bar ──────────────────────────────────────────────────────────── */}
       <div className="mb-8 flex flex-wrap gap-2 overflow-x-auto pb-1">
         {tabs.map((tab) => {
-          const Icon = tabIconMap[tab.key];
-          const count = matches[tab.key].length;
+          const Icon = tabIconMap[tab.key] || Users;
+          const count = (allMatches[tab.key] || []).length;
           return (
             <button
               key={tab.key}

@@ -96,9 +96,9 @@ export default function VerificationQueue() {
 
         {/* Summary Stats */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-          <Card className="p-6 shadow-lg border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+          <Card className="p-6 shadow-xs border-neutral-200 bg-white">
             <div className="flex items-center gap-4">
-              <div className="rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 p-4">
+              <div className="rounded-xl bg-amber-50 p-4">
                 <ShieldCheck className="h-8 w-8 text-amber-600" />
               </div>
               <div>
@@ -107,9 +107,9 @@ export default function VerificationQueue() {
               </div>
             </div>
           </Card>
-          <Card className="p-6 shadow-lg border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+          <Card className="p-6 shadow-xs border-neutral-200 bg-white">
             <div className="flex items-center gap-4">
-              <div className="rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 p-4">
+              <div className="rounded-xl bg-emerald-50 p-4">
                 <CheckCircle2 className="h-8 w-8 text-emerald-600" />
               </div>
               <div>
@@ -118,9 +118,9 @@ export default function VerificationQueue() {
               </div>
             </div>
           </Card>
-          <Card className="p-6 shadow-lg border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+          <Card className="p-6 shadow-xs border-neutral-200 bg-white">
             <div className="flex items-center gap-4">
-              <div className="rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 p-4">
+              <div className="rounded-xl bg-rose-50 p-4">
                 <X className="h-8 w-8 text-rose-600" />
               </div>
               <div>
@@ -140,7 +140,7 @@ export default function VerificationQueue() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
-              <Card className="p-8 shadow-lg border-neutral-100/50 bg-white/80 backdrop-blur-sm hover:shadow-xl transition-shadow">
+              <Card className="p-8 shadow-xs border-neutral-200 bg-white hover:border-neutral-300 transition-colors">
                 <div className="space-y-6">
                   {/* Header Section */}
                   <div className="flex items-start justify-between gap-6">
@@ -243,7 +243,7 @@ export default function VerificationQueue() {
 
         {/* Empty State (hidden when there are items) */}
         {verificationQueue.length === 0 && (
-          <Card className="p-16 text-center shadow-lg border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+          <Card className="p-16 text-center shadow-xs border-neutral-200 bg-white">
             <ShieldCheck className="mx-auto h-16 w-16 text-neutral-300 mb-6" />
             <h3 className="text-2xl font-bold text-neutral-900 mb-2">All Caught Up!</h3>
             <p className="text-base text-neutral-600">

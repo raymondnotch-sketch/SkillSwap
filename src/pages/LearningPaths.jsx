@@ -138,7 +138,7 @@ export default function LearningPaths() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <Sparkles className="h-6 w-6 text-white" />
               </div>
               <span className="text-white/90 text-sm font-semibold uppercase tracking-wider">Structured Learning</span>
@@ -162,17 +162,15 @@ export default function LearningPaths() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mb-12"
           >
-            <Card className={`p-0 overflow-hidden bg-gradient-to-br ${featuredPath.gradientFrom} ${featuredPath.gradientTo} text-white relative`}>
-              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE4YzAtOS45NC04LjA2LTE4LTE4LTE4UzAgOC4wNiAwIDE4aDE4YzAgOS45NCA4LjA2IDE4IDE4IDE4VjE4aC0wek0zNiAzNmMwLTkuOTQtOC4wNi0xOC0xOC0xOHYxOGgxOHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-10"></div>
-              
+            <Card className="p-0 overflow-hidden bg-primary-900 text-white relative">
               <div className="relative p-10">
                 <div className="flex flex-col lg:flex-row gap-10 items-start lg:items-center">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <div className="w-14 h-14 rounded-2xl bg-primary-800 flex items-center justify-center">
                         <featuredPath.icon className="h-7 w-7 text-white" />
                       </div>
-                      <Badge color="primary" variant="solid" className="bg-white/25 text-white border-white/40 backdrop-blur-sm text-xs font-bold">
+                      <Badge color="primary" variant="solid" className="bg-primary-800 text-white border-primary-700 text-xs font-bold">
                         FEATURED PATH
                       </Badge>
                     </div>
@@ -190,12 +188,12 @@ export default function LearningPaths() {
                           <span className="text-white/90 font-semibold">Your Progress</span>
                           <span className="text-white font-bold">{featuredPath.progress}%</span>
                         </div>
-                        <div className="h-3 w-full rounded-full bg-white/20 backdrop-blur-sm overflow-hidden">
+                        <div className="h-3 w-full rounded-full bg-primary-800 overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${featuredPath.progress}%` }}
                             transition={{ duration: 1, delay: 0.5 }}
-                            className="h-3 rounded-full bg-white shadow-lg"
+                            className="h-3 rounded-full bg-primary-400"
                           />
                         </div>
                       </div>
@@ -220,11 +218,11 @@ export default function LearningPaths() {
                       </div>
                     </div>
 
-                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button
                         size="lg"
                         icon={featuredPath.progress > 0 ? Play : ArrowRight}
-                        className="bg-white text-emerald-700 hover:bg-white/90 border-0 shadow-xl font-bold px-8 py-4"
+                        className="bg-white text-primary-900 hover:bg-neutral-100 border-0 shadow-xs font-bold px-8 py-4"
                       >
                         {featuredPath.progress > 0 ? 'Continue Learning' : 'Start Learning Path'}
                       </Button>
@@ -232,7 +230,7 @@ export default function LearningPaths() {
                   </div>
 
                   {/* Module List */}
-                  <div className="lg:w-96 bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                  <div className="lg:w-96 bg-primary-800 rounded-xl p-6 border border-primary-700">
                     <h3 className="text-base font-bold text-white mb-4">What You'll Learn</h3>
                     <div className="space-y-3">
                       {featuredPath.modules.map((module, index) => (

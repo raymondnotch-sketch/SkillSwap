@@ -107,18 +107,18 @@ function SidebarContent({ isCollapsed, onToggleCollapse, logout }) {
       {/* Logo header */}
       <div className={`flex h-[64px] shrink-0 items-center border-b border-neutral-100 ${isCollapsed ? 'justify-center px-3' : 'px-4'}`}>
         {isCollapsed ? (
-          <div className="gradient-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-indigo-500/20">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white shadow-xs">
             S
           </div>
         ) : (
           <Link
             to="/dashboard"
-            className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-xl"
+            className="flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg"
           >
-            <div className="gradient-primary flex h-8 w-8 items-center justify-center rounded-xl text-sm font-black text-white shadow-md shadow-indigo-500/20 transition-transform duration-200 group-hover:scale-110">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-sm font-bold text-white shadow-xs">
               S
             </div>
-            <span className="font-bold text-neutral-900 text-[15px] tracking-tight">{APP_NAME}</span>
+            <span className="font-bold text-neutral-900 text-base tracking-tight">{APP_NAME}</span>
           </Link>
         )}
       </div>

@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* Designer Primary Palette - Refined Sapphire Blue (High-end UI feel) */
+  /* Primary Color Palette - Solid Sapphire Blue */
   --color-primary-50: hsl(214, 100%, 97%);
   --color-primary-100: hsl(214, 94%, 93%);
   --color-primary-200: hsl(213, 96%, 86%);
   --color-primary-300: hsl(212, 96%, 72%);
   --color-primary-400: hsl(211, 94%, 58%);
-  --color-primary-500: hsl(215, 91%, 46%); /* Premium Designer Blue */
+  --color-primary-500: hsl(215, 91%, 46%);
   --color-primary-600: hsl(217, 92%, 39%);
   --color-primary-700: hsl(219, 85%, 31%);
   --color-primary-800: hsl(221, 79%, 23%);
   --color-primary-900: hsl(222, 67%, 13%);
   --color-primary-950: hsl(222, 60%, 8%);
 
-  /* Mapping indigo variables to primary blues to style hardcoded component selectors */
+  /* Mapping indigo variables to primary blues */
   --color-indigo-50: hsl(214, 100%, 97%);
   --color-indigo-100: hsl(214, 94%, 93%);
   --color-indigo-200: hsl(213, 96%, 86%);
@@ -27,7 +27,7 @@
   --color-indigo-900: hsl(222, 67%, 13%);
   --color-indigo-950: hsl(222, 60%, 8%);
 
-  /* Designer Accent Palette - Elegant Amethyst Violet (Low-noise, premium style) */
+  /* Accent Color Palette - Violet */
   --color-accent-50: hsl(258, 100%, 98%);
   --color-accent-100: hsl(257, 94%, 94%);
   --color-accent-200: hsl(256, 96%, 88%);
@@ -40,7 +40,7 @@
   --color-accent-900: hsl(261, 67%, 14%);
   --color-accent-950: hsl(262, 60%, 9%);
 
-  /* Neutrals: Cool, elegant gray slate scales */
+  /* Neutrals: Slate scale */
   --color-neutral-50: hsl(210, 40%, 98%);
   --color-neutral-100: hsl(210, 30%, 96%);
   --color-neutral-200: hsl(210, 20%, 90%);
@@ -53,7 +53,7 @@
   --color-neutral-900: hsl(210, 15%, 12%);
   --color-neutral-950: hsl(210, 20%, 6%);
 
-  /* Refined Alert Tones */
+  /* Alert Tones */
   --color-success-50: hsl(150, 75%, 98%);
   --color-success-100: hsl(150, 70%, 94%);
   --color-success-500: hsl(150, 80%, 38%);
@@ -69,33 +69,20 @@
   --color-warning-500: hsl(38, 90%, 46%);
   --color-warning-700: hsl(38, 92%, 32%);
 
-  /* Font scales */
+  /* Typography */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Designer Soft Shadows (Almost invisible, extremely elegant) */
-  --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.01), 0 8px 24px -4px rgba(9, 30, 66, 0.04);
-  --shadow-card-hover: 0 20px 48px -10px rgba(9, 30, 66, 0.09), 0 2px 8px 0 rgba(9, 30, 66, 0.02);
+  /* Crisp, subtle shadows */
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 1px 3px 0 rgba(0, 0, 0, 0.05);
 
   /* Subtle Custom Animations */
-  --animate-float: float 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  --animate-pulse-slow: pulse-slow 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  --animate-fade-in-up: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  --animate-scale-in: scale-in 0.3s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
-}
-
-/* Custom Keyframes */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.93; }
+  --animate-fade-in-up: fade-in-up 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-scale-in: scale-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -110,7 +97,7 @@
   color: var(--color-primary-900);
 }
 
-/* Clean Professional Scrollbar styling */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -119,13 +106,11 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-neutral-200, #e2e8f0);
+  background: var(--color-neutral-300, #cbd5e1);
   border-radius: 9999px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neutral-300, #cbd5e1);
+  background: var(--color-neutral-400, #94a3b8);
 }
 
 /* Typography and Layout baseline */
@@ -138,108 +123,48 @@ body {
   overflow-x: hidden;
 }
 
-/* Designer Form Styling Override (Extremely Clean) */
+/* Form Inputs */
 input, textarea, select {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
 }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--color-primary-400) !important;
-  box-shadow: 0 0 0 3px hsla(215, 91%, 46%, 0.08) !important;
+  border-color: var(--color-primary-500) !important;
+  box-shadow: 0 0 0 3px hsla(215, 91%, 46%, 0.12) !important;
   outline: none !important;
 }
 
-/* Shared Form Primitives — kept in sync with the Input/FormField components
-   so raw <input>/<label> usage (auth pages) matches the design system. */
-.form-label {
-  display: block;
-  margin-bottom: 0.375rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 500;
-  color: var(--color-neutral-700);
-}
-
-.form-input {
-  width: 100%;
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-neutral-200);
-  background-color: #ffffff;
-  padding: 0.625rem 1rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: var(--color-neutral-900);
-}
-.form-input::placeholder {
-  color: var(--color-neutral-400);
-}
-.form-input:hover:not(:focus):not(:disabled) {
-  border-color: var(--color-neutral-300);
-}
-.form-input:disabled {
-  cursor: not-allowed;
-  background-color: var(--color-neutral-50);
-  opacity: 0.5;
-}
-.form-input.error {
-  border-color: var(--color-danger-500);
-}
-.form-input.error:focus {
-  border-color: var(--color-danger-500) !important;
-  box-shadow: 0 0 0 3px hsla(355, 88%, 52%, 0.12) !important;
-}
-
-/* Custom Interactive Utilities */
-
-/* 1. Header/Toolbar Accent Indicator - Elegant and Static gradient */
 .accent-line {
-  height: 3px;
+  height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-accent-400) 50%, var(--color-primary-500) 100%);
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.02);
+  background-color: var(--color-neutral-200);
 }
 
-/* 2. Premium Low-Noise Text Gradient */
 .text-gradient {
-  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-accent-500) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-primary-600);
 }
 
-/* 3. Deep Navy-to-Sapphire Primary Component Gradient */
 .gradient-primary {
-  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-700) 50%, var(--color-primary-800) 100%);
+  background-color: var(--color-primary-600);
 }
 
-/* 4. Soft Glassmorphism */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: #ffffff;
+  border: 1px solid var(--color-neutral-200);
 }
 
-/* 5. Ambient Designer Radial Mesh (Subtle highlights, Apple style) */
 .gradient-mesh {
   background-color: hsl(210, 40%, 98%);
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(215, 91%, 46%, 0.02) 0px, transparent 65%),
-    radial-gradient(at 100% 0%, hsla(253, 91%, 50%, 0.025) 0px, transparent 65%),
-    radial-gradient(at 50% 100%, hsla(215, 91%, 46%, 0.015) 0px, transparent 60%);
-  background-attachment: fixed;
 }
 
-/* Professional Focus Ring Utility */
 .focus-ring {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.15s ease;
 }
 .focus-ring:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--color-primary-500);
 }
 
-/* Premium Dark Theme Implementation */
+/* Dark Theme */
 .dark {
   color-scheme: dark;
   background-color: hsl(210, 20%, 6%);
@@ -262,22 +187,18 @@ input:focus, textarea:focus, select:focus {
   
   .gradient-mesh {
     background-color: hsl(210, 20%, 6%);
-    background-image: 
-      radial-gradient(at 0% 0%, hsla(215, 91%, 46%, 0.08) 0px, transparent 65%),
-      radial-gradient(at 100% 0%, hsla(253, 91%, 50%, 0.09) 0px, transparent 65%),
-      radial-gradient(at 50% 100%, hsla(215, 91%, 46%, 0.06) 0px, transparent 60%);
   }
   
   .glass {
-    background: rgba(15, 23, 42, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: hsl(210, 15%, 12%);
+    border: 1px solid hsl(210, 11%, 24%);
   }
   
   ::-webkit-scrollbar-thumb {
-    background: var(--color-neutral-200);
+    background: var(--color-neutral-300);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-neutral-300);
+    background: var(--color-neutral-400);
   }
 
   input, textarea, select {
@@ -285,7 +206,7 @@ input:focus, textarea:focus, select:focus {
   }
   input:focus, textarea:focus, select:focus {
     border-color: var(--color-primary-400) !important;
-    box-shadow: 0 0 0 3px hsla(215, 91%, 46%, 0.15) !important;
+    box-shadow: 0 0 0 3px hsla(215, 91%, 46%, 0.2) !important;
   }
 
   .form-input {
@@ -294,3 +215,4 @@ input:focus, textarea:focus, select:focus {
     border-color: var(--color-neutral-200);
   }
 }
+

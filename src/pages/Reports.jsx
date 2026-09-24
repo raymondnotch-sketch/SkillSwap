@@ -130,7 +130,7 @@ export default function Reports() {
         </div>
 
         {/* Filter & Date Range Row */}
-        <Card className="p-6 shadow-lg border-neutral-100/50 bg-white/80 backdrop-blur-sm">
+        <Card className="p-6 shadow-xs border-neutral-200 bg-white">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" />
@@ -139,7 +139,7 @@ export default function Reports() {
                 placeholder="Search reports..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl border-2 border-neutral-200 pl-12 pr-4 py-3.5 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 transition-all focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-100"
+                className="w-full rounded-xl border border-neutral-200 pl-12 pr-4 py-3 text-sm font-medium text-neutral-900 placeholder:text-neutral-400 transition-colors focus:border-primary-500 focus:outline-none"
               />
             </div>
             <div className="relative">
@@ -147,7 +147,7 @@ export default function Reports() {
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
-                className="w-full appearance-none rounded-xl border-2 border-neutral-200 pl-12 pr-10 py-3.5 text-sm font-medium text-neutral-900 transition-all focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-100"
+                className="w-full appearance-none rounded-xl border border-neutral-200 pl-12 pr-10 py-3 text-sm font-medium text-neutral-900 transition-colors focus:border-primary-500 focus:outline-none"
               >
                 <option value="all">All Time</option>
                 <option value="today">Today</option>
@@ -158,7 +158,7 @@ export default function Reports() {
             <div className="relative">
               <Filter className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral-400" />
               <select
-                className="w-full appearance-none rounded-xl border-2 border-neutral-200 pl-12 pr-10 py-3.5 text-sm font-medium text-neutral-900 transition-all focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-100"
+                className="w-full appearance-none rounded-xl border border-neutral-200 pl-12 pr-10 py-3 text-sm font-medium text-neutral-900 transition-colors focus:border-primary-500 focus:outline-none"
               >
                 <option>All Severity</option>
                 <option>High Priority</option>
@@ -175,16 +175,16 @@ export default function Reports() {
             <button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
-              className={`rounded-xl border-2 px-6 py-3.5 text-sm font-semibold transition-all ${
+              className={`rounded-lg border px-5 py-2.5 text-sm font-medium transition-colors ${
                 activeCategory === category.id
-                  ? 'border-primary-500 bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-200'
+                  ? 'border-primary-600 bg-primary-600 text-white shadow-xs'
                   : 'border-neutral-200 text-neutral-700 hover:border-neutral-300 hover:bg-neutral-50'
               }`}
             >
               {category.label}
-              <span className={`ml-2 rounded-full px-2.5 py-0.5 text-xs font-bold ${
+              <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-semibold ${
                 activeCategory === category.id
-                  ? 'bg-white/30 text-white'
+                  ? 'bg-primary-700 text-white'
                   : 'bg-neutral-100 text-neutral-600'
               }`}>
                 {category.count}
@@ -204,7 +204,7 @@ export default function Reports() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                <Card className="p-8 shadow-lg border-neutral-100/50 bg-white/80 backdrop-blur-sm hover:shadow-xl transition-shadow">
+                <Card className="p-8 shadow-xs border-neutral-200 bg-white hover:border-neutral-300 transition-colors">
                   <div className="space-y-6">
                     {/* Header */}
                     <div className="flex items-start justify-between gap-4">

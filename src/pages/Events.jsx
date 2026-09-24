@@ -10,7 +10,8 @@ import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import Avatar from '../components/ui/Avatar';
 import SearchBar from '../components/ui/SearchBar';
-import { events, eventFilters as filters } from '../data/events';
+import { getEvents, getEventFilters } from '../services/events';
+import { useEffect } from 'react';
 
 const eventIconMap = { Code, Palette, TrendingUp, Coffee, Monitor };
 const eventTypeColors = {
@@ -24,10 +25,21 @@ const eventTypeColors = {
 export default function Events() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [eventsList, setEventsList] = useState([]);
+  const [filtersList, setFiltersList] = useState([]);
 
-  const filteredEvents = events.filter((e) => {
+  useEffect(() => {
+    async function loadData() {
+      const [evts, flts] = await Promise.all([getEvents(), getEventFilters()]);
+      setEventsList(Array.isArray(evts) ? evts : []);
+      setFiltersList(Array.isArray(flts) ? flts : []);
+    }
+    loadData();
+  }, []);
+
+  const filteredEvents = eventsList.filter((e) => {
     const matchesFilter = activeFilter === 'all' || e.type === activeFilter;
-    const matchesSearch = !search || e.title.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = !search || (e.title && e.title.toLowerCase().includes(search.toLowerCase()));
     return matchesFilter && matchesSearch;
   });
 
@@ -79,8 +91,8 @@ export default function Events() {
 
           {/* Filter Tabs */}
           <div className="flex flex-wrap gap-3">
-            {filters.map((f) => {
-              const count = f.key === 'all' ? events.length : events.filter((e) => e.type === f.key).length;
+            {filtersList.map((f) => {
+              const count = f.key === 'all' ? eventsList.length : eventsList.filter((e) => e.type === f.key).length;
               return (
                 <motion.button
                   key={f.key}
@@ -143,17 +155,13 @@ export default function Events() {
                       'from-indigo-400 to-indigo-600'} relative overflow-hidden`}>
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300"></div>
                       <div className="absolute top-4 right-4">
-                        <motion.div
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.6 }}
-                          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-                        >
+                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                           <Icon className="h-6 w-6 text-white" />
-                        </motion.div>
+                        </div>
                       </div>
                       {/* Date Badge */}
                       <div className="absolute bottom-4 left-4">
-                        <div className="bg-gradient-to-r from-white/95 to-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg">
+                        <div className="bg-white rounded-lg px-3.5 py-1.5 shadow-xs">
                           <p className="text-xs font-bold text-neutral-900">{event.date}</p>
                         </div>
                       </div>
